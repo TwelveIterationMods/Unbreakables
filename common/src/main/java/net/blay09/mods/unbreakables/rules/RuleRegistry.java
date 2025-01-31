@@ -239,7 +239,7 @@ public class RuleRegistry {
         final var requirementType = new RequirementType<T>() {
             @Override
             public ResourceLocation getId() {
-                return new ResourceLocation(Unbreakables.MOD_ID, name);
+                return ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
             }
 
             @Override
@@ -279,7 +279,7 @@ public class RuleRegistry {
         register(new VariableResolver() {
             @Override
             public ResourceLocation getId() {
-                return new ResourceLocation(Unbreakables.MOD_ID, name);
+                return ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
             }
 
             @Override
@@ -293,7 +293,7 @@ public class RuleRegistry {
         register(new ConditionResolver<P>() {
             @Override
             public ResourceLocation getId() {
-                return new ResourceLocation(Unbreakables.MOD_ID, name);
+                return ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
             }
 
             @Override
@@ -312,7 +312,7 @@ public class RuleRegistry {
         register(new ConditionResolver<P>() {
             @Override
             public ResourceLocation getId() {
-                return new ResourceLocation(Unbreakables.MOD_ID, notName);
+                return ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, notName);
             }
 
             @Override
@@ -349,7 +349,7 @@ public class RuleRegistry {
         register(new RequirementFunction<T, P>() {
             @Override
             public ResourceLocation getId() {
-                return new ResourceLocation(Unbreakables.MOD_ID, name);
+                return ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
             }
 
             @Override

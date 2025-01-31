@@ -21,7 +21,7 @@ public class Unbreakables {
         RuleRegistry.registerDefaults();
         UnbreakablesConfig.initialize();
 
-        Balm.addServerReloadListener(new ResourceLocation(MOD_ID, "json_rulesets"), new RulesetLoader());
+        Balm.addServerReloadListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "json_rulesets"), new RulesetLoader());
 
         Balm.getEvents().onEvent(DigSpeedEvent.class, (event) -> {
             final var breakContext = new BreakContextImpl(event.getPlayer(), event.getState());

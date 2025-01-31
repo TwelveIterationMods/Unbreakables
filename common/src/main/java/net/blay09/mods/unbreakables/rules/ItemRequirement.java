@@ -23,7 +23,7 @@ public class ItemRequirement implements BreakRequirement {
         int count = 0;
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             final var slotStack = player.getInventory().getItem(i);
-            if (ItemStack.isSameItemSameTags(itemStack, slotStack)) {
+            if (ItemStack.isSameItemSameComponents(itemStack, slotStack)) {
                 count += slotStack.getCount();
 
                 if (count >= this.count) {
@@ -41,7 +41,7 @@ public class ItemRequirement implements BreakRequirement {
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             final var leftToConsume = this.count - consumed;
             final var slotStack = player.getInventory().getItem(i);
-            if (ItemStack.isSameItemSameTags(itemStack, slotStack)) {
+            if (ItemStack.isSameItemSameComponents(itemStack, slotStack)) {
                 final var count = Math.min(slotStack.getCount(), leftToConsume);
                 slotStack.shrink(count);
                 consumed += count;

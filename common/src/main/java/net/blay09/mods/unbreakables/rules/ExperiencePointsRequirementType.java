@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ExperiencePointsRequirementType implements RequirementType<ExperiencePointsRequirement> {
 
-    public static final ResourceLocation ID = new ResourceLocation(Unbreakables.MOD_ID, "experience_points");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, "experience_points");
 
     @Override
     public ResourceLocation getId() {
