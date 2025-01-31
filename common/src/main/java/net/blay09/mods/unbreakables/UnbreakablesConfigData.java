@@ -14,7 +14,7 @@ public class UnbreakablesConfigData implements BalmConfigData {
     @ExpectedType(String.class)
     public List<String> rulesets = new ArrayList<>();
 
-    @Comment("Custom rules.")
+    @Comment("List of custom rules with comma-separated parameters in parentheses. Conditions can be defined as comma-separated list in square brackets. Will be applied in order.")
     @ExpectedType(String.class)
     public List<String> rules = new ArrayList<>();
 }
