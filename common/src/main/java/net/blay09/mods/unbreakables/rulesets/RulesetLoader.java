@@ -26,7 +26,7 @@ public class RulesetLoader implements ResourceManagerReloadListener {
 
         for (final var entry : COMPAT_JSONS.listMatchingResources(resourceManager).entrySet()) {
             try (final var reader = entry.getValue().openAsReader()) {
-                if (isRulesetEnabled(entry.getKey().toString())) {
+                if (isRulesetEnabled(entry.getKey().getNamespace() + ":" + entry.getKey().getPath().replace("unbreakables/", "").replace(".json", ""))) {
                     load(gson.fromJson(reader, JsonRulesetData.class).getRules());
                 }
             } catch (Exception e) {
