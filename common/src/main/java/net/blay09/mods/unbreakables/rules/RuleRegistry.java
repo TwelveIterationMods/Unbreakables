@@ -154,7 +154,7 @@ public class RuleRegistry {
         }, () -> true);
 
         registerModifier("add_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.get(parameters.item.value);
+            final var item = BuiltInRegistries.ITEM.getValue(parameters.item.value);
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
                 cost.setCount((int) parameters.count.value);
@@ -164,7 +164,7 @@ public class RuleRegistry {
             return cost;
         }, () -> true);
         registerModifier("multiply_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.get(parameters.item.value);
+            final var item = BuiltInRegistries.ITEM.getValue(parameters.item.value);
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
                 cost.setCount((int) parameters.count.value);
@@ -174,7 +174,7 @@ public class RuleRegistry {
             return cost;
         }, () -> true);
         registerModifier("scaled_add_item_cost", itemRequirements, VariableScaledItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.get(parameters.item.value);
+            final var item = BuiltInRegistries.ITEM.getValue(parameters.item.value);
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
                 cost.setCount((int) (context.getContextValue(parameters.variable.value) * parameters.count.value));
@@ -184,7 +184,7 @@ public class RuleRegistry {
             return cost;
         }, () -> true);
         registerModifier("scaled_multiply_item_cost", itemRequirements, VariableScaledItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.get(parameters.item.value);
+            final var item = BuiltInRegistries.ITEM.getValue(parameters.item.value);
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
                 cost.setCount((int) (context.getContextValue(parameters.variable.value) * parameters.count.value));
@@ -194,7 +194,7 @@ public class RuleRegistry {
             return cost;
         }, () -> true);
         registerModifier("min_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.get(parameters.item.value);
+            final var item = BuiltInRegistries.ITEM.getValue(parameters.item.value);
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
                 cost.setCount((int) parameters.count.value);
@@ -204,7 +204,7 @@ public class RuleRegistry {
             return cost;
         }, () -> true);
         registerModifier("max_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.get(parameters.item.value);
+            final var item = BuiltInRegistries.ITEM.getValue(parameters.item.value);
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
                 cost.setCount((int) parameters.count.value);
