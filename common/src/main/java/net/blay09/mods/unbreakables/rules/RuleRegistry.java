@@ -7,6 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
@@ -85,7 +86,8 @@ public class RuleRegistry {
                     for (final var property : context.getState().getProperties()) {
                         if (property.getName().equals(parameters.property.value)) {
                             final var value = context.getState().getValue(property);
-                            if (value.toString().equals(parameters.value.value)) {
+                            final var stringValue = value instanceof StringRepresentable rep ? rep.getSerializedName() : value.toString();
+                            if (stringValue.equals(parameters.value.value)) {
                                 return true;
                             }
                         }
