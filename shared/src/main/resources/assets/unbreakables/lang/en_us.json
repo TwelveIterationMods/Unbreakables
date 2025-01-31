@@ -1,0 +1,6 @@
+{
+  "config.unbreakables.title": "Unbreakables",
+  "chat.unbreakables.level_requirement": "Level Cost: %d",
+  "chat.unbreakables.xp_requirement": "Experience Cost: %d",
+  "chat.unbreakables.item_requirement": "Item Cost: %d %s"
+}
