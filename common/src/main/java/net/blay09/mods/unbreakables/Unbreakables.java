@@ -33,6 +33,10 @@ public class Unbreakables {
         });
 
         Balm.getEvents().onEvent(BreakBlockEvent.class, (event) -> {
+            if (event.getPlayer().getAbilities().instabuild) {
+                return;
+            }
+
             final var breakContext = new BreakContextImpl(event.getPlayer(), event.getState());
             RulesetLoader.getLoadedRules().forEach(breakContext::apply);
             final var requirement = breakContext.resolve();
@@ -42,6 +46,10 @@ public class Unbreakables {
         }, EventPriority.Highest);
 
         Balm.getEvents().onEvent(BreakBlockEvent.class, (event) -> {
+            if (event.getPlayer().getAbilities().instabuild) {
+                return;
+            }
+
             final var breakContext = new BreakContextImpl(event.getPlayer(), event.getState());
             RulesetLoader.getLoadedRules().forEach(breakContext::apply);
             final var requirement = breakContext.resolve();
