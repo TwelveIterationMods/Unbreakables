@@ -1,6 +1,6 @@
 # Unbreakable
 
-Minecraft Mod.
+Minecraft Mod. Configure blocks to be unbreakable under certain conditions. Compatible with Waystones.
 
 - [Modpack Permissions](https://mods.twelveiterations.com/permissions)
 
