@@ -33,6 +33,8 @@ public class RulesetLoader implements ResourceManagerReloadListener {
                 Unbreakables.logger.error("Parsing error loading Unbreakables rulesets at {}", entry.getKey(), e);
             }
         }
+
+        Unbreakables.logger.info("{} unbreakable rules loaded", loadedRules.size());
     }
 
     private static boolean isRulesetEnabled(String id) {
@@ -45,6 +47,7 @@ public class RulesetLoader implements ResourceManagerReloadListener {
                 continue;
             }
 
+            Unbreakables.logger.info("Loading unbreakable rule {}", rule);
             RequirementModifierParser.parse(rule)
                     .filter(configuredModifier -> configuredModifier.requirement().modifier().isEnabled())
                     .ifPresent(loadedRules::add);
