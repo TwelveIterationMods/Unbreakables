@@ -2,16 +2,15 @@ package net.blay09.mods.unbreakables;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.BreakBlockEvent;
-import net.blay09.mods.balm.api.event.DigSpeedEvent;
 import net.blay09.mods.balm.api.event.EventPriority;
 import net.blay09.mods.balm.api.event.PlayerLoginEvent;
+import net.blay09.mods.unbreakables.event.NewDigSpeedEvent;
 import net.blay09.mods.unbreakables.network.ModNetworking;
 import net.blay09.mods.unbreakables.network.UnbreakableRulesMessage;
-import net.blay09.mods.unbreakables.rules.BreakContextImpl;
+import net.blay09.mods.unbreakables.rules.parameters.InbuiltConditions;
 import net.blay09.mods.unbreakables.rules.RuleRegistry;
 import net.blay09.mods.unbreakables.rulesets.RulesetLoader;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +22,7 @@ public class Unbreakables {
 
     public static void initialize() {
         RuleRegistry.registerDefaults();
+        InbuiltConditions.register();
         UnbreakablesConfig.initialize();
 
         ModNetworking.initialize(Balm.getNetworking());
@@ -33,8 +33,8 @@ public class Unbreakables {
                 .onEvent(PlayerLoginEvent.class,
                         event -> Balm.getNetworking().sendTo(event.getPlayer(), new UnbreakableRulesMessage(RulesetLoader.getRules())));
 
-        Balm.getEvents().onEvent(DigSpeedEvent.class, (event) -> {
-            final var breakContext = new BreakContextImpl(event.getPlayer(), event.getState());
+        Balm.getEvents().onEvent(NewDigSpeedEvent.class, (event) -> {
+            final var breakContext = new BreakContextImpl(event.getBlockGetter(), event.getPos(), event.getState(), event.getPlayer());
             RulesetLoader.getLoadedRules().forEach(breakContext::apply);
             final var requirement = breakContext.resolve();
             if (!requirement.canAfford(event.getPlayer())) {
@@ -47,7 +47,7 @@ public class Unbreakables {
                 return;
             }
 
-            final var breakContext = new BreakContextImpl(event.getPlayer(), event.getState());
+            final var breakContext = new BreakContextImpl(event.getLevel(), event.getPos(), event.getState(), event.getPlayer());
             RulesetLoader.getLoadedRules().forEach(breakContext::apply);
             final var requirement = breakContext.resolve();
             if (!requirement.canAfford(event.getPlayer())) {
@@ -60,7 +60,7 @@ public class Unbreakables {
                 return;
             }
 
-            final var breakContext = new BreakContextImpl(event.getPlayer(), event.getState());
+            final var breakContext = new BreakContextImpl(event.getLevel(), event.getPos(), event.getState(), event.getPlayer());
             RulesetLoader.getLoadedRules().forEach(breakContext::apply);
             final var requirement = breakContext.resolve();
             if (!requirement.canAfford(event.getPlayer())) {
