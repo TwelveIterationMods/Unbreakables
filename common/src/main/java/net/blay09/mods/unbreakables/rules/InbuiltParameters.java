@@ -11,6 +11,9 @@ public class InbuiltParameters {
         RuleRegistry.registerSerializer(FloatParameter.class, it -> new FloatParameter(Float.parseFloat(it)));
         RuleRegistry.registerSerializer(StringParameter.class, StringParameter::new);
         RuleRegistry.registerSerializer(IdParameter.class, it -> new IdParameter(ResourceLocation.tryParse(it)));
+        RuleRegistry.registerSerializer(TaggableIdParameter.class,
+                it -> it.startsWith("#") ? new TaggableIdParameter(ResourceLocation.tryParse(it.substring(1)),
+                        true) : new TaggableIdParameter(ResourceLocation.tryParse(it), false));
         RuleRegistry.registerSerializer(UnbreakablesIdParameter.class, it -> new UnbreakablesIdParameter(RuleParser.unbreakablesResourceLocation(it)));
         RuleRegistry.registerSerializer(ComponentParameter.class,
                 it -> new ComponentParameter(it.startsWith("$") ? Component.translatable(it.substring(1)) : Component.literal(it)));
