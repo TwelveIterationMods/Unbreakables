@@ -5,6 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "unbreakables.refmap.json",
   "mixins": [
+    "BlockStateBaseAccessor",
+    "BlockStateBaseMixin"
   ],
   "client": [
   ],
