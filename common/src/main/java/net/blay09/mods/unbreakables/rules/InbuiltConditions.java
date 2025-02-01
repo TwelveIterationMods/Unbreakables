@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.Mob;
@@ -56,18 +57,11 @@ public class InbuiltConditions {
 
         RuleRegistry.registerConditionResolver("has_effect",
                 FloatCountedIdParameter.class,
-                (context, parameters) -> {
-                    final var effect = BuiltInRegistries.MOB_EFFECT.get(parameters.id().value());
-                    if (effect != null) {
-                        final var effectInstance = context.getPlayer().getEffect(effect);
-                        if (effectInstance != null) {
-                            final var amplifier = effectInstance.getAmplifier();
-                            return amplifier >= parameters.count().value() - 1;
-                        }
-                        return false;
-                    }
-                    return false;
-                });
+                (context, parameters) -> BuiltInRegistries.MOB_EFFECT.getHolder(parameters.id().value())
+                        .map(it -> context.getPlayer().getEffect(it))
+                        .map(MobEffectInstance::getAmplifier)
+                        .map(it -> it >= parameters.count().value() - 1)
+                        .orElse(false));
 
         RuleRegistry.registerConditionResolver("is_tool",
                 TaggableIdParameter.class,
@@ -81,12 +75,11 @@ public class InbuiltConditions {
                 FloatCountedIdParameter.class,
                 (context, parameters) -> {
                     final var item = context.getPlayer().getMainHandItem();
-                    final var enchantment = BuiltInRegistries.ENCHANTMENT.get(parameters.id().value());
-                    if (enchantment != null) {
-                        final var level = EnchantmentHelper.getItemEnchantmentLevel(enchantment, item);
-                        return level >= parameters.count().value();
-                    }
-                    return false;
+                    return context.getPlayer().registryAccess().registry(Registries.ENCHANTMENT)
+                            .flatMap(it -> it.getHolder(parameters.id().value()))
+                            .map(it -> EnchantmentHelper.getItemEnchantmentLevel(it, item))
+                            .map(it -> it >= parameters.count().value())
+                            .orElse(false);
                 });
 
         RuleRegistry.registerConditionResolver("players_nearby",
