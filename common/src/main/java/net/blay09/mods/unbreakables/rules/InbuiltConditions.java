@@ -21,8 +21,10 @@ import java.util.Optional;
 public class InbuiltConditions {
     public static void register() {
         RuleRegistry.registerConditionResolver("is_block",
-                IdParameter.class,
-                (context, parameters) -> BuiltInRegistries.BLOCK.getKey(context.getState().getBlock()).equals(parameters.value()));
+                TaggableIdParameter.class,
+                (context, parameters) -> parameters.isTag() ? context.getState()
+                        .is(TagKey.create(Registries.BLOCK, parameters.value())) : BuiltInRegistries.BLOCK.getKey(context.getState().getBlock())
+                        .equals(parameters.value()));
 
         RuleRegistry.registerConditionResolver("is_tag",
                 IdParameter.class,
