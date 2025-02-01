@@ -1,11 +1,18 @@
 package net.blay09.mods.unbreakables.rules;
 
+import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.rules.parameters.IdParameter;
 import net.blay09.mods.unbreakables.rules.parameters.PropertyParameter;
+import net.blay09.mods.unbreakables.rules.parameters.TaggableIdParameter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+
+import java.util.Optional;
 
 public class InbuiltConditions {
     public static void register() {
@@ -34,6 +41,27 @@ public class InbuiltConditions {
 
         RuleRegistry.registerConditionResolver("is_in_dimension",
                 IdParameter.class,
-                (context, parameters) -> context.getPlayer().level().dimension().location().equals(parameters.value()));
+                (context, parameters) -> pickLevel(context).map(it -> it.dimension().location().equals(parameters.value())).orElse(false));
+
+        RuleRegistry.registerConditionResolver("is_in_biome",
+                TaggableIdParameter.class,
+                (context, parameters) -> pickLevelAccessor(context).map(it -> parameters.isTag() ? it.getBiome(context.getPos())
+                        .is(TagKey.create(Registries.BIOME, parameters.value())) : it.getBiome(context.getPos()).is(parameters.value())).orElse(false));
+
+
+    }
+
+    private static Optional<LevelAccessor> pickLevelAccessor(BreakContext context) {
+        if (context.getBlockGetter() instanceof LevelAccessor level) {
+            return Optional.of(level);
+        }
+        return Optional.ofNullable(context.getPlayer()).map(Entity::level);
+    }
+
+    private static Optional<Level> pickLevel(BreakContext context) {
+        if (context.getBlockGetter() instanceof Level level) {
+            return Optional.of(level);
+        }
+        return Optional.ofNullable(context.getPlayer()).map(Entity::level);
     }
 }
