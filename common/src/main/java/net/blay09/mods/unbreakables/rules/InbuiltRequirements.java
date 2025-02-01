@@ -92,7 +92,7 @@ public class InbuiltRequirements {
             }
             return cost;
         }, () -> true);
-        RuleRegistry.registerModifier("scaled_add_item_cost", itemRequirements, VariableScaledItemParameter.class, (cost, context, parameters) -> {
+        RuleRegistry.registerModifier("scaled_add_item_cost", itemRequirements, VariableScaledFloatCountedIdParameter.class, (cost, context, parameters) -> {
             final var item = BuiltInRegistries.ITEM.get(parameters.item().value());
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
@@ -102,7 +102,7 @@ public class InbuiltRequirements {
             }
             return cost;
         }, () -> true);
-        RuleRegistry.registerModifier("scaled_multiply_item_cost", itemRequirements, VariableScaledItemParameter.class, (cost, context, parameters) -> {
+        RuleRegistry.registerModifier("scaled_multiply_item_cost", itemRequirements, VariableScaledFloatCountedIdParameter.class, (cost, context, parameters) -> {
             final var item = BuiltInRegistries.ITEM.get(parameters.item().value());
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
