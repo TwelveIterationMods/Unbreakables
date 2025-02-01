@@ -7,9 +7,13 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.phys.AABB;
 
 import java.util.Optional;
 
@@ -77,6 +81,35 @@ public class InbuiltConditions {
                     }
                     return false;
                 });
+
+        RuleRegistry.registerConditionResolver("players_nearby",
+                BiFloatParameter.class,
+                (context, parameters) -> pickLevel(context).map(level -> level.getEntities(context.getPlayer(),
+                        AABB.ofSize(context.getPos().getCenter(), parameters.first().value(), parameters.first().value(), parameters.first().value()),
+                        EntitySelector.NO_SPECTATORS).size() > parameters.second().value()).orElse(false));
+
+        RuleRegistry.registerConditionResolver("mobs_nearby",
+                BiFloatParameter.class,
+                (context, parameters) -> pickLevel(context).map(level -> level.getEntities(context.getPlayer(),
+                        AABB.ofSize(context.getPos().getCenter(), parameters.first().value(), parameters.first().value(), parameters.first().value()),
+                        it -> it instanceof Mob).size() > parameters.second().value()).orElse(false));
+
+        RuleRegistry.registerConditionResolver("animals_nearby",
+                BiFloatParameter.class,
+                (context, parameters) -> pickLevel(context).map(level -> level.getEntities(context.getPlayer(),
+                        AABB.ofSize(context.getPos().getCenter(), parameters.first().value(), parameters.first().value(), parameters.first().value()),
+                        it -> it instanceof Animal).size() > parameters.second().value()).orElse(false));
+
+        RuleRegistry.registerConditionResolver("entity_nearby",
+                EntityNearbyParameter.class,
+                (context, parameters) -> pickLevel(context).map(level -> level.getEntities(context.getPlayer(), AABB.ofSize(context.getPos().getCenter(),
+                                        parameters.distance().value(),
+                                        parameters.distance().value(),
+                                        parameters.distance().value()),
+                                it -> parameters.entity().isTag() ? it.getType()
+                                        .is(TagKey.create(Registries.ENTITY_TYPE, parameters.entity().value())) : BuiltInRegistries.ENTITY_TYPE.getKey(it.getType())
+                                        .equals(parameters.entity().value()))
+                        .size() > parameters.minimum().value()).orElse(false));
     }
 
     private static Optional<LevelAccessor> pickLevelAccessor(BreakContext context) {
