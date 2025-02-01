@@ -72,8 +72,8 @@ public class InbuiltRequirements {
             return cost;
         }, () -> true);
 
-        RuleRegistry.registerModifier("add_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.get(parameters.item().value());
+        RuleRegistry.registerModifier("add_item_cost", itemRequirements, FloatCountedIdParameter.class, (cost, context, parameters) -> {
+            final var item = BuiltInRegistries.ITEM.get(parameters.id().value());
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
                 cost.setCount((int) parameters.count().value());
@@ -82,8 +82,8 @@ public class InbuiltRequirements {
             }
             return cost;
         }, () -> true);
-        RuleRegistry.registerModifier("multiply_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.get(parameters.item().value());
+        RuleRegistry.registerModifier("multiply_item_cost", itemRequirements, FloatCountedIdParameter.class, (cost, context, parameters) -> {
+            final var item = BuiltInRegistries.ITEM.get(parameters.id().value());
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
                 cost.setCount((int) parameters.count().value());
@@ -112,8 +112,8 @@ public class InbuiltRequirements {
             }
             return cost;
         }, () -> true);
-        RuleRegistry.registerModifier("min_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.get(parameters.item().value());
+        RuleRegistry.registerModifier("min_item_cost", itemRequirements, FloatCountedIdParameter.class, (cost, context, parameters) -> {
+            final var item = BuiltInRegistries.ITEM.get(parameters.id().value());
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
                 cost.setCount((int) parameters.count().value());
@@ -122,8 +122,8 @@ public class InbuiltRequirements {
             }
             return cost;
         }, () -> true);
-        RuleRegistry.registerModifier("max_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.get(parameters.item().value());
+        RuleRegistry.registerModifier("max_item_cost", itemRequirements, FloatCountedIdParameter.class, (cost, context, parameters) -> {
+            final var item = BuiltInRegistries.ITEM.get(parameters.id().value());
             if (cost.getItemStack().getItem() != item) {
                 cost.setItemStack(new ItemStack(item));
                 cost.setCount((int) parameters.count().value());

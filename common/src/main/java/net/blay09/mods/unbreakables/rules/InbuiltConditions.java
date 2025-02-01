@@ -1,16 +1,13 @@
 package net.blay09.mods.unbreakables.rules;
 
 import net.blay09.mods.unbreakables.api.BreakContext;
-import net.blay09.mods.unbreakables.rules.parameters.EffectParameter;
-import net.blay09.mods.unbreakables.rules.parameters.IdParameter;
-import net.blay09.mods.unbreakables.rules.parameters.PropertyParameter;
-import net.blay09.mods.unbreakables.rules.parameters.TaggableIdParameter;
+import net.blay09.mods.unbreakables.rules.parameters.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
@@ -51,16 +48,32 @@ public class InbuiltConditions {
                         .is(TagKey.create(Registries.BIOME, parameters.value())) : it.getBiome(context.getPos()).is(parameters.value())).orElse(false));
 
         RuleRegistry.registerConditionResolver("has_effect",
-                EffectParameter.class,
+                FloatCountedIdParameter.class,
                 (context, parameters) -> {
                     final var effect = BuiltInRegistries.MOB_EFFECT.get(parameters.id().value());
                     if (effect != null) {
                         final var effectInstance = context.getPlayer().getEffect(effect);
                         if (effectInstance != null) {
                             final var amplifier = effectInstance.getAmplifier();
-                            return amplifier >= parameters.level().value();
+                            return amplifier >= parameters.count().value();
                         }
                         return false;
+                    }
+                    return false;
+                });
+
+        RuleRegistry.registerConditionResolver("is_tool",
+                IdParameter.class,
+                (context, parameters) -> context.getPlayer().getMainHandItem().getItem() == BuiltInRegistries.ITEM.get(parameters.value()));
+
+        RuleRegistry.registerConditionResolver("is_enchanted",
+                FloatCountedIdParameter.class,
+                (context, parameters) -> {
+                    final var item = context.getPlayer().getMainHandItem();
+                    final var enchantment = BuiltInRegistries.ENCHANTMENT.get(parameters.id().value());
+                    if (enchantment != null) {
+                        final var level = EnchantmentHelper.getItemEnchantmentLevel(enchantment, item);
+                        return level >= parameters.count().value();
                     }
                     return false;
                 });
