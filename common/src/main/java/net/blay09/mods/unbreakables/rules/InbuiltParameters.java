@@ -26,5 +26,7 @@ public class InbuiltParameters {
         RuleRegistry.registerDefaultSerializer(PropertyParameter.class);
         RuleRegistry.registerDefaultSerializer(IntCountedIdParameter.class);
         RuleRegistry.registerDefaultSerializer(EntityNearbyParameter.class);
+        RuleRegistry.registerDefaultSerializer(PositionParameter.class);
+        RuleRegistry.registerDefaultSerializer(BoundsParameter.class);
     }
 }
