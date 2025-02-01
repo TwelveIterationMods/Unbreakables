@@ -2,6 +2,7 @@ package net.blay09.mods.unbreakables.rules;
 
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.rules.parameters.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
@@ -110,6 +111,46 @@ public class InbuiltConditions {
                                         .is(TagKey.create(Registries.ENTITY_TYPE, parameters.entity().value())) : BuiltInRegistries.ENTITY_TYPE.getKey(it.getType())
                                         .equals(parameters.entity().value()))
                         .size() > parameters.minimum().value()).orElse(false));
+
+        RuleRegistry.registerConditionResolver("is_above_y",
+                FloatParameter.class,
+                (context, parameters) -> {
+                    final var pos = context.getPos();
+                    return pos.getY() > parameters.value();
+                });
+
+        RuleRegistry.registerConditionResolver("is_below_y",
+                FloatParameter.class,
+                (context, parameters) -> {
+                    final var pos = context.getPos();
+                    return pos.getY() < parameters.value();
+                });
+
+        RuleRegistry.registerConditionResolver("is_within",
+                BoundsParameter.class,
+                (context, parameters) -> {
+                    final var pos = context.getPos();
+                    return pos.getX() >= parameters.minX().value() && pos.getX() <= parameters.maxX().value() &&
+                            pos.getY() >= parameters.minY().value() && pos.getY() <= parameters.maxY().value() &&
+                            pos.getZ() >= parameters.minZ().value() && pos.getZ() <= parameters.maxZ().value();
+                });
+
+        RuleRegistry.registerConditionResolver("is_at",
+                PositionParameter.class,
+                (context, parameters) -> {
+                    final var pos = context.getPos();
+                    return pos.getX() == parameters.x().value() && pos.getY() == parameters.y().value() && pos.getZ() == parameters.z().value();
+                });
+
+        RuleRegistry.registerConditionResolver("is_near",
+                IsNearParameter.class,
+                (context, parameters) -> {
+                    final var pos = context.getPos();
+                    final var rulePos = new BlockPos(parameters.x().value(), parameters.y().value(), parameters.z().value());
+                    final var maxDist = parameters.distance().value();
+                    final var dist = pos.distSqr(rulePos);
+                    return dist <= maxDist * maxDist;
+                });
     }
 
     private static Optional<LevelAccessor> pickLevelAccessor(BreakContext context) {
