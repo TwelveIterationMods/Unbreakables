@@ -4,6 +4,9 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.BreakBlockEvent;
 import net.blay09.mods.balm.api.event.DigSpeedEvent;
 import net.blay09.mods.balm.api.event.EventPriority;
+import net.blay09.mods.balm.api.event.PlayerLoginEvent;
+import net.blay09.mods.unbreakables.network.ModNetworking;
+import net.blay09.mods.unbreakables.network.UnbreakableRulesMessage;
 import net.blay09.mods.unbreakables.rules.BreakContextImpl;
 import net.blay09.mods.unbreakables.rules.RuleRegistry;
 import net.blay09.mods.unbreakables.rulesets.RulesetLoader;
@@ -21,7 +24,13 @@ public class Unbreakables {
         RuleRegistry.registerDefaults();
         UnbreakablesConfig.initialize();
 
+        ModNetworking.initialize(Balm.getNetworking());
+
         Balm.addServerReloadListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "json_rulesets"), new RulesetLoader());
+
+        Balm.getEvents()
+                .onEvent(PlayerLoginEvent.class,
+                        event -> Balm.getNetworking().sendTo(event.getPlayer(), new UnbreakableRulesMessage(RulesetLoader.getRules())));
 
         Balm.getEvents().onEvent(DigSpeedEvent.class, (event) -> {
             final var breakContext = new BreakContextImpl(event.getPlayer(), event.getState());
