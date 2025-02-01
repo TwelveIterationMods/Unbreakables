@@ -1,10 +1,16 @@
-package net.blay09.mods.unbreakables.rules;
+package net.blay09.mods.unbreakables;
 
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.blay09.mods.unbreakables.api.ConfiguredCondition;
+import net.blay09.mods.unbreakables.rules.CombinedRequirement;
+import net.blay09.mods.unbreakables.rules.ConfiguredRequirementModifier;
+import net.blay09.mods.unbreakables.rules.NoRequirement;
+import net.blay09.mods.unbreakables.rules.RuleRegistry;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
@@ -13,12 +19,16 @@ import java.util.Map;
 public class BreakContextImpl implements BreakContext {
 
     private final Map<ResourceLocation, BreakRequirement> requirements = new HashMap<>();
-    private final Player player;
+    private final BlockGetter blockGetter;
+    private final BlockPos pos;
     private final BlockState state;
+    private final Player player;
 
-    public BreakContextImpl(Player player, BlockState state) {
-        this.player = player;
+    public BreakContextImpl(BlockGetter blockGetter, BlockPos pos, BlockState state, Player player) {
+        this.blockGetter = blockGetter;
+        this.pos = pos;
         this.state = state;
+        this.player = player;
     }
 
     @SuppressWarnings("unchecked")
@@ -62,12 +72,22 @@ public class BreakContextImpl implements BreakContext {
     }
 
     @Override
-    public Player getPlayer() {
-        return player;
+    public BlockGetter getBlockGetter() {
+        return blockGetter;
+    }
+
+    @Override
+    public BlockPos getPos() {
+        return pos;
     }
 
     @Override
     public BlockState getState() {
         return state;
+    }
+
+    @Override
+    public Player getPlayer() {
+        return player;
     }
 }
