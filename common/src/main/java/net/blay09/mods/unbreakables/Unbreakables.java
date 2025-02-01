@@ -8,6 +8,7 @@ import net.blay09.mods.unbreakables.event.NewDigSpeedEvent;
 import net.blay09.mods.unbreakables.network.ModNetworking;
 import net.blay09.mods.unbreakables.network.UnbreakableRulesMessage;
 import net.blay09.mods.unbreakables.rules.InbuiltConditions;
+import net.blay09.mods.unbreakables.rules.InbuiltParameters;
 import net.blay09.mods.unbreakables.rules.RuleRegistry;
 import net.blay09.mods.unbreakables.rulesets.RulesetLoader;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,7 @@ public class Unbreakables {
 
     public static void initialize() {
         RuleRegistry.registerDefaults();
+        InbuiltParameters.register();
         InbuiltConditions.register();
         UnbreakablesConfig.initialize();
 
