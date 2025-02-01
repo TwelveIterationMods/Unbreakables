@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemRequirementType implements RequirementType<ItemRequirement> {
 
-    public static final ResourceLocation ID = new ResourceLocation(Unbreakables.MOD_ID, "item");
+    public static final ResourceLocation ID = new ResourceLocation(Unbreakables.MOD_ID, "id");
 
     @Override
     public ResourceLocation getId() {

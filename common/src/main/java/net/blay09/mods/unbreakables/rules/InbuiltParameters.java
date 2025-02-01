@@ -20,9 +20,9 @@ public class InbuiltParameters {
         RuleRegistry.registerDefaultSerializer(VariableScaledParameter.class);
         RuleRegistry.registerDefaultSerializer(CooldownParameter.class);
         RuleRegistry.registerDefaultSerializer(VariableScaledCooldownParameter.class);
-        RuleRegistry.registerDefaultSerializer(ItemParameter.class);
+        RuleRegistry.registerDefaultSerializer(FloatCountedIdParameter.class);
         RuleRegistry.registerDefaultSerializer(VariableScaledItemParameter.class);
         RuleRegistry.registerDefaultSerializer(PropertyParameter.class);
-        RuleRegistry.registerDefaultSerializer(EffectParameter.class);
+        RuleRegistry.registerDefaultSerializer(IntCountedIdParameter.class);
     }
 }
