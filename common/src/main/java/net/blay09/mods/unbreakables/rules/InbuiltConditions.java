@@ -1,6 +1,7 @@
 package net.blay09.mods.unbreakables.rules;
 
 import net.blay09.mods.unbreakables.api.BreakContext;
+import net.blay09.mods.unbreakables.rules.parameters.EffectParameter;
 import net.blay09.mods.unbreakables.rules.parameters.IdParameter;
 import net.blay09.mods.unbreakables.rules.parameters.PropertyParameter;
 import net.blay09.mods.unbreakables.rules.parameters.TaggableIdParameter;
@@ -8,6 +9,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -48,7 +50,20 @@ public class InbuiltConditions {
                 (context, parameters) -> pickLevelAccessor(context).map(it -> parameters.isTag() ? it.getBiome(context.getPos())
                         .is(TagKey.create(Registries.BIOME, parameters.value())) : it.getBiome(context.getPos()).is(parameters.value())).orElse(false));
 
-
+        RuleRegistry.registerConditionResolver("has_effect",
+                EffectParameter.class,
+                (context, parameters) -> {
+                    final var effect = BuiltInRegistries.MOB_EFFECT.get(parameters.id().value());
+                    if (effect != null) {
+                        final var effectInstance = context.getPlayer().getEffect(effect);
+                        if (effectInstance != null) {
+                            final var amplifier = effectInstance.getAmplifier();
+                            return amplifier >= parameters.level().value();
+                        }
+                        return false;
+                    }
+                    return false;
+                });
     }
 
     private static Optional<LevelAccessor> pickLevelAccessor(BreakContext context) {
