@@ -8,7 +8,6 @@ import net.blay09.mods.unbreakables.rules.requirements.ExperiencePointsRequireme
 import net.blay09.mods.unbreakables.rules.requirements.ItemRequirementType;
 import net.blay09.mods.unbreakables.rules.requirements.RefuseRequirement;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -153,21 +152,6 @@ public class RuleRegistry {
             cost.setMessage(parameters.value());
             return cost;
         }, () -> true);
-
-        registerSerializer(NoParameter.class, it -> NoParameter.INSTANCE);
-        registerSerializer(IntParameter.class, it -> new IntParameter(Integer.parseInt(it)));
-        registerSerializer(FloatParameter.class, it -> new FloatParameter(Float.parseFloat(it)));
-        registerSerializer(StringParameter.class, StringParameter::new);
-        registerSerializer(IdParameter.class, it -> new IdParameter(ResourceLocation.tryParse(it)));
-        registerSerializer(UnbreakablesIdParameter.class, it -> new UnbreakablesIdParameter(RuleParser.unbreakablesResourceLocation(it)));
-        registerSerializer(ComponentParameter.class,
-                it -> new ComponentParameter(it.startsWith("$") ? Component.translatable(it.substring(1)) : Component.literal(it)));
-        registerDefaultSerializer(VariableScaledParameter.class);
-        registerDefaultSerializer(CooldownParameter.class);
-        registerDefaultSerializer(VariableScaledCooldownParameter.class);
-        registerDefaultSerializer(ItemParameter.class);
-        registerDefaultSerializer(VariableScaledItemParameter.class);
-        registerDefaultSerializer(PropertyParameter.class);
     }
 
     private static <T extends BreakRequirement> RequirementType<T> createDefaultType(String name, Class<T> requirementClass) {
