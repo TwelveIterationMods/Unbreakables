@@ -1,6 +1,7 @@
-package net.blay09.mods.unbreakables.rules.parameters;
+package net.blay09.mods.unbreakables.rules;
 
-import net.blay09.mods.unbreakables.rules.RuleRegistry;
+import net.blay09.mods.unbreakables.rules.parameters.IdParameter;
+import net.blay09.mods.unbreakables.rules.parameters.PropertyParameter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;

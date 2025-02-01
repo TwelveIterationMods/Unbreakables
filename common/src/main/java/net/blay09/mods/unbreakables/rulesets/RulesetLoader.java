@@ -5,8 +5,8 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.UnbreakablesConfig;
 import net.blay09.mods.unbreakables.network.UnbreakableRulesMessage;
-import net.blay09.mods.unbreakables.rules.ConfiguredRequirementModifier;
-import net.blay09.mods.unbreakables.rules.RequirementModifierParser;
+import net.blay09.mods.unbreakables.rules.ConfiguredRule;
+import net.blay09.mods.unbreakables.rules.RuleParser;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -23,7 +23,7 @@ public class RulesetLoader implements ResourceManagerReloadListener {
 
     private static final List<String> rules = new ArrayList<>();
     private static final Set<String> knownRulesets = new HashSet<>();
-    private static final List<ConfiguredRequirementModifier<?, ?>> loadedRules = new ArrayList<>();
+    private static final List<ConfiguredRule<?, ?>> loadedRules = new ArrayList<>();
 
     @Override
     public void onResourceManagerReload(ResourceManager resourceManager) {
@@ -71,7 +71,7 @@ public class RulesetLoader implements ResourceManagerReloadListener {
             }
 
             Unbreakables.logger.info("Loading unbreakable rule {}", rule);
-            RequirementModifierParser.parse(rule)
+            RuleParser.parse(rule)
                     .filter(configuredModifier -> configuredModifier.requirement().modifier().isEnabled())
                     .ifPresent(loadedRules::add);
         }
@@ -81,7 +81,7 @@ public class RulesetLoader implements ResourceManagerReloadListener {
         return rules;
     }
 
-    public static List<ConfiguredRequirementModifier<?, ?>> getLoadedRules() {
+    public static List<ConfiguredRule<?, ?>> getLoadedRules() {
         return loadedRules;
     }
 

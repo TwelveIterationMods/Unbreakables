@@ -5,6 +5,7 @@ import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.blay09.mods.unbreakables.api.ConditionResolver;
 import net.blay09.mods.unbreakables.api.ConfiguredCondition;
 import net.blay09.mods.unbreakables.api.RequirementFunction;
+import net.blay09.mods.unbreakables.rules.requirements.ConfiguredRequirement;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
@@ -12,9 +13,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-public class RequirementModifierParser {
+public class RuleParser {
 
-    public static Optional<ConfiguredRequirementModifier<?, ?>> parse(String input) {
+    public static Optional<ConfiguredRule<?, ?>> parse(String input) {
         try {
             final var conditionsStart = input.indexOf('[');
             final var conditionsEnd = input.indexOf(']');
@@ -22,7 +23,7 @@ public class RequirementModifierParser {
             final var functionPart = input.substring(conditionsEnd + 1).trim();
             final var conditions = parseConditions(conditionsPart);
             final var requirement = parseRequirement(functionPart);
-            return Optional.of(new ConfiguredRequirementModifier<>(requirement, conditions));
+            return Optional.of(new ConfiguredRule<>(requirement, conditions));
         } catch (Exception e) {
             Unbreakables.logger.error("Could not parse warp requirement: {}", input, e);
             return Optional.empty();
