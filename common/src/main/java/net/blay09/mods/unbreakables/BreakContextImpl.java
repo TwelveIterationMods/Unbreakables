@@ -3,9 +3,9 @@ package net.blay09.mods.unbreakables;
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.blay09.mods.unbreakables.api.ConfiguredCondition;
-import net.blay09.mods.unbreakables.rules.CombinedRequirement;
-import net.blay09.mods.unbreakables.rules.ConfiguredRequirementModifier;
-import net.blay09.mods.unbreakables.rules.NoRequirement;
+import net.blay09.mods.unbreakables.rules.requirements.CombinedRequirement;
+import net.blay09.mods.unbreakables.rules.ConfiguredRule;
+import net.blay09.mods.unbreakables.rules.requirements.NoRequirement;
 import net.blay09.mods.unbreakables.rules.RuleRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +32,7 @@ public class BreakContextImpl implements BreakContext {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends BreakRequirement, P> void apply(ConfiguredRequirementModifier<T, P> configuredModifier) {
+    public <T extends BreakRequirement, P> void apply(ConfiguredRule<T, P> configuredModifier) {
         for (final var condition : configuredModifier.conditions()) {
             if (!matchesCondition(condition)) {
                 return;
