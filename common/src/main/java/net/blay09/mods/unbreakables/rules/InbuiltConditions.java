@@ -57,7 +57,7 @@ public class InbuiltConditions {
 
         RuleRegistry.registerConditionResolver("has_effect",
                 FloatCountedIdParameter.class,
-                (context, parameters) -> BuiltInRegistries.MOB_EFFECT.getHolder(parameters.id().value())
+                (context, parameters) -> BuiltInRegistries.MOB_EFFECT.get(parameters.id().value())
                         .map(it -> context.getPlayer().getEffect(it))
                         .map(MobEffectInstance::getAmplifier)
                         .map(it -> it >= parameters.count().value() - 1)
@@ -69,14 +69,14 @@ public class InbuiltConditions {
                         .getMainHandItem()
                         .is(TagKey.create(Registries.ITEM, parameters.value())) : context.getPlayer()
                         .getMainHandItem()
-                        .is(BuiltInRegistries.ITEM.get(parameters.value())));
+                        .is(BuiltInRegistries.ITEM.getValue(parameters.value())));
 
         RuleRegistry.registerConditionResolver("is_enchanted",
                 FloatCountedIdParameter.class,
                 (context, parameters) -> {
                     final var item = context.getPlayer().getMainHandItem();
-                    return context.getPlayer().registryAccess().registry(Registries.ENCHANTMENT)
-                            .flatMap(it -> it.getHolder(parameters.id().value()))
+                    return context.getPlayer().registryAccess().lookup(Registries.ENCHANTMENT)
+                            .flatMap(it -> it.get(parameters.id().value()))
                             .map(it -> EnchantmentHelper.getItemEnchantmentLevel(it, item))
                             .map(it -> it >= parameters.count().value())
                             .orElse(false);
