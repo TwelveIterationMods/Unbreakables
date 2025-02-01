@@ -23,5 +23,6 @@ public class InbuiltParameters {
         RuleRegistry.registerDefaultSerializer(ItemParameter.class);
         RuleRegistry.registerDefaultSerializer(VariableScaledItemParameter.class);
         RuleRegistry.registerDefaultSerializer(PropertyParameter.class);
+        RuleRegistry.registerDefaultSerializer(EffectParameter.class);
     }
 }
