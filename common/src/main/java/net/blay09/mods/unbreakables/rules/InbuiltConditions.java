@@ -70,8 +70,12 @@ public class InbuiltConditions {
                 });
 
         RuleRegistry.registerConditionResolver("is_tool",
-                IdParameter.class,
-                (context, parameters) -> context.getPlayer().getMainHandItem().getItem() == BuiltInRegistries.ITEM.get(parameters.value()));
+                TaggableIdParameter.class,
+                (context, parameters) -> parameters.isTag() ? context.getPlayer()
+                        .getMainHandItem()
+                        .is(TagKey.create(Registries.ITEM, parameters.value())) : context.getPlayer()
+                        .getMainHandItem()
+                        .is(BuiltInRegistries.ITEM.get(parameters.value())));
 
         RuleRegistry.registerConditionResolver("is_enchanted",
                 FloatCountedIdParameter.class,
