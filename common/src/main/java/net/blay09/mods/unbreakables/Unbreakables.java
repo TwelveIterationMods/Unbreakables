@@ -9,7 +9,7 @@ import net.blay09.mods.unbreakables.network.ModNetworking;
 import net.blay09.mods.unbreakables.network.UnbreakableRulesMessage;
 import net.blay09.mods.unbreakables.rules.InbuiltConditions;
 import net.blay09.mods.unbreakables.rules.InbuiltParameters;
-import net.blay09.mods.unbreakables.rules.RuleRegistry;
+import net.blay09.mods.unbreakables.rules.InbuiltRequirements;
 import net.blay09.mods.unbreakables.rulesets.RulesetLoader;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -22,9 +22,10 @@ public class Unbreakables {
     public static final String MOD_ID = "unbreakables";
 
     public static void initialize() {
-        RuleRegistry.registerDefaults();
         InbuiltParameters.register();
         InbuiltConditions.register();
+        InbuiltRequirements.register();
+
         UnbreakablesConfig.initialize();
 
         ModNetworking.initialize(Balm.getNetworking());

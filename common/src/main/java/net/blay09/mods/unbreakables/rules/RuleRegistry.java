@@ -2,14 +2,7 @@ package net.blay09.mods.unbreakables.rules;
 
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.api.*;
-import net.blay09.mods.unbreakables.rules.parameters.*;
-import net.blay09.mods.unbreakables.rules.requirements.ExperienceLevelRequirementType;
-import net.blay09.mods.unbreakables.rules.requirements.ExperiencePointsRequirementType;
-import net.blay09.mods.unbreakables.rules.requirements.ItemRequirementType;
-import net.blay09.mods.unbreakables.rules.requirements.RefuseRequirement;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -24,137 +17,7 @@ public class RuleRegistry {
     private static final Map<ResourceLocation, VariableResolver> variableResolvers = new HashMap<>();
     private static final Map<ResourceLocation, ConditionResolver<?>> conditionResolvers = new HashMap<>();
 
-    public static void registerDefaults() {
-        final var experiencePointRequirements = new ExperiencePointsRequirementType();
-        final var experienceLevelRequirements = new ExperienceLevelRequirementType();
-        final var itemRequirements = new ItemRequirementType();
-
-        register(experiencePointRequirements);
-        register(experienceLevelRequirements);
-        register(itemRequirements);
-
-        registerModifier("add_level_cost", experienceLevelRequirements, FloatParameter.class, (cost, context, parameters) -> {
-            cost.setLevels((int) (cost.getLevels() + parameters.value()));
-            return cost;
-        }, () -> true);
-        registerModifier("multiply_level_cost", experienceLevelRequirements, FloatParameter.class, (cost, context, parameters) -> {
-            cost.setLevels((int) (cost.getLevels() * parameters.value()));
-            return cost;
-        }, () -> true);
-        registerModifier("scaled_add_level_cost", experienceLevelRequirements, VariableScaledParameter.class, (cost, context, parameters) -> {
-            final var sourceValue = context.getContextValue(parameters.id().value());
-            cost.setLevels((int) (cost.getLevels() + sourceValue * parameters.scale().value()));
-            return cost;
-        }, () -> true);
-        registerModifier("scaled_multiply_level_cost", experienceLevelRequirements, VariableScaledParameter.class, (cost, context, parameters) -> {
-            final var sourceValue = context.getContextValue(parameters.id().value());
-            cost.setLevels((int) (cost.getLevels() * sourceValue * parameters.scale().value()));
-            return cost;
-        }, () -> true);
-        registerModifier("min_level_cost", experienceLevelRequirements, IntParameter.class, (cost, context, parameters) -> {
-            cost.setLevels(Math.max(cost.getLevels(), parameters.value()));
-            return cost;
-        }, () -> true);
-        registerModifier("max_level_cost", experienceLevelRequirements, IntParameter.class, (cost, context, parameters) -> {
-            cost.setLevels(Math.min(cost.getLevels(), parameters.value()));
-            return cost;
-        }, () -> true);
-
-        registerModifier("add_xp_cost", experiencePointRequirements, IntParameter.class, (cost, context, parameters) -> {
-            cost.setPoints(cost.getPoints() + parameters.value());
-            return cost;
-        }, () -> true);
-        registerModifier("multiply_xp_cost", experiencePointRequirements, FloatParameter.class, (cost, context, parameters) -> {
-            cost.setPoints((int) (cost.getPoints() * parameters.value()));
-            return cost;
-        }, () -> true);
-        registerModifier("scaled_add_xp_cost", experiencePointRequirements, VariableScaledParameter.class, (cost, context, parameters) -> {
-            final var sourceValue = context.getContextValue(parameters.id().value());
-            cost.setPoints((int) (cost.getPoints() + sourceValue * parameters.scale().value()));
-            return cost;
-        }, () -> true);
-        registerModifier("scaled_multiply_level_cost", experiencePointRequirements, VariableScaledParameter.class, (cost, context, parameters) -> {
-            final var sourceValue = context.getContextValue(parameters.id().value());
-            cost.setPoints((int) (cost.getPoints() * sourceValue * parameters.scale().value()));
-            return cost;
-        }, () -> true);
-        registerModifier("min_xp_cost", experiencePointRequirements, IntParameter.class, (cost, context, parameters) -> {
-            cost.setPoints(Math.max(cost.getPoints(), parameters.value()));
-            return cost;
-        }, () -> true);
-        registerModifier("max_xp_cost", experiencePointRequirements, IntParameter.class, (cost, context, parameters) -> {
-            cost.setPoints(Math.min(cost.getPoints(), parameters.value()));
-            return cost;
-        }, () -> true);
-
-        registerModifier("add_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.getValue(parameters.item().value());
-            if (cost.getItemStack().getItem() != item) {
-                cost.setItemStack(new ItemStack(item));
-                cost.setCount((int) parameters.count().value());
-            } else {
-                cost.setCount((int) (cost.getCount() + parameters.count().value()));
-            }
-            return cost;
-        }, () -> true);
-        registerModifier("multiply_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.getValue(parameters.item().value());
-            if (cost.getItemStack().getItem() != item) {
-                cost.setItemStack(new ItemStack(item));
-                cost.setCount((int) parameters.count().value());
-            } else {
-                cost.setCount((int) (cost.getCount() * parameters.count().value()));
-            }
-            return cost;
-        }, () -> true);
-        registerModifier("scaled_add_item_cost", itemRequirements, VariableScaledItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.getValue(parameters.item().value());
-            if (cost.getItemStack().getItem() != item) {
-                cost.setItemStack(new ItemStack(item));
-                cost.setCount((int) (context.getContextValue(parameters.variable().value()) * parameters.count().value()));
-            } else {
-                cost.setCount((int) (cost.getCount() + context.getContextValue(parameters.variable().value()) * parameters.count().value()));
-            }
-            return cost;
-        }, () -> true);
-        registerModifier("scaled_multiply_item_cost", itemRequirements, VariableScaledItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.getValue(parameters.item().value());
-            if (cost.getItemStack().getItem() != item) {
-                cost.setItemStack(new ItemStack(item));
-                cost.setCount((int) (context.getContextValue(parameters.variable().value()) * parameters.count().value()));
-            } else {
-                cost.setCount((int) (cost.getCount() * context.getContextValue(parameters.variable().value()) * parameters.count().value()));
-            }
-            return cost;
-        }, () -> true);
-        registerModifier("min_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.getValue(parameters.item().value());
-            if (cost.getItemStack().getItem() != item) {
-                cost.setItemStack(new ItemStack(item));
-                cost.setCount((int) parameters.count().value());
-            } else {
-                cost.setCount(Math.max(cost.getCount(), (int) parameters.count().value()));
-            }
-            return cost;
-        }, () -> true);
-        registerModifier("max_item_cost", itemRequirements, ItemParameter.class, (cost, context, parameters) -> {
-            final var item = BuiltInRegistries.ITEM.getValue(parameters.item().value());
-            if (cost.getItemStack().getItem() != item) {
-                cost.setItemStack(new ItemStack(item));
-                cost.setCount((int) parameters.count().value());
-            } else {
-                cost.setCount(Math.min(cost.getCount(), (int) parameters.count().value()));
-            }
-            return cost;
-        }, () -> true);
-
-        registerModifier("refuse", createDefaultType("refuse", RefuseRequirement.class), ComponentParameter.class, (cost, context, parameters) -> {
-            cost.setMessage(parameters.value());
-            return cost;
-        }, () -> true);
-    }
-
-    private static <T extends BreakRequirement> RequirementType<T> createDefaultType(String name, Class<T> requirementClass) {
+    public static <T extends BreakRequirement> RequirementType<T> createDefaultType(String name, Class<T> requirementClass) {
         final var requirementType = new RequirementType<T>() {
             @Override
             public ResourceLocation getId() {
@@ -264,7 +127,7 @@ public class RuleRegistry {
         });
     }
 
-    private static <T extends BreakRequirement, P> void registerModifier(String name, RequirementType<T> requirementType, Class<P> parameterType, BreakModifierFunction<T, P> function, Supplier<Boolean> predicate) {
+    public static <T extends BreakRequirement, P> void registerModifier(String name, RequirementType<T> requirementType, Class<P> parameterType, BreakModifierFunction<T, P> function, Supplier<Boolean> predicate) {
         register(new RequirementFunction<T, P>() {
             @Override
             public ResourceLocation getId() {
