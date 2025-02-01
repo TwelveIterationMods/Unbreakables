@@ -1,4 +1,4 @@
-package net.blay09.mods.unbreakables.rules;
+package net.blay09.mods.unbreakables.rules.requirements;
 
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.blay09.mods.unbreakables.api.RequirementFunction;

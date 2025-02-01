@@ -3,6 +3,10 @@ package net.blay09.mods.unbreakables.rules;
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.api.*;
 import net.blay09.mods.unbreakables.rules.parameters.*;
+import net.blay09.mods.unbreakables.rules.requirements.ExperienceLevelRequirementType;
+import net.blay09.mods.unbreakables.rules.requirements.ExperiencePointsRequirementType;
+import net.blay09.mods.unbreakables.rules.requirements.ItemRequirementType;
+import net.blay09.mods.unbreakables.rules.requirements.RefuseRequirement;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -155,7 +159,7 @@ public class RuleRegistry {
         registerSerializer(FloatParameter.class, it -> new FloatParameter(Float.parseFloat(it)));
         registerSerializer(StringParameter.class, StringParameter::new);
         registerSerializer(IdParameter.class, it -> new IdParameter(ResourceLocation.tryParse(it)));
-        registerSerializer(UnbreakablesIdParameter.class, it -> new UnbreakablesIdParameter(RequirementModifierParser.unbreakablesResourceLocation(it)));
+        registerSerializer(UnbreakablesIdParameter.class, it -> new UnbreakablesIdParameter(RuleParser.unbreakablesResourceLocation(it)));
         registerSerializer(ComponentParameter.class,
                 it -> new ComponentParameter(it.startsWith("$") ? Component.translatable(it.substring(1)) : Component.literal(it)));
         registerDefaultSerializer(VariableScaledParameter.class);
@@ -259,7 +263,7 @@ public class RuleRegistry {
     }
 
     public static <T> void registerDefaultSerializer(Class<T> type) {
-        registerSerializer(type, it -> RequirementModifierParser.deserializeParameterList(type, it));
+        registerSerializer(type, it -> RuleParser.deserializeParameterList(type, it));
     }
 
     public static <T> void registerSerializer(Class<T> type, Function<String, T> deserializer) {
