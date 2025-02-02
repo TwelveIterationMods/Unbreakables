@@ -1,4 +1,4 @@
-# Unbreakable
+# Unbreakables
 
 Minecraft Mod. Configure blocks to be unbreakable under certain conditions. Compatible with Waystones.
 
