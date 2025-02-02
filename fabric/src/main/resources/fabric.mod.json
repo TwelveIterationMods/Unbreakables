@@ -1,21 +1,21 @@
 {
   "schemaVersion": 1,
-  "id": "unbreakables",
+  "id": "${mod_id}",
   "version": "${version}",
 
-  "name": "Unbreakables",
-  "description": "Configure blocks to be unbreakable under certain conditions. With support for Waystones.",
+  "name": "${mod_name}",
+  "description": "${description}",
   "authors": [
     "BlayTheNinth"
   ],
   "contact": {
-    "homepage": "https://mods.twelveiterations.com/mc/unbreakables",
-    "sources": "https://github.com/TwelveIterationMods/Unbreakables",
-    "issues": "https://github.com/TwelveIterationMods/Unbreakables/issues"
+    "homepage": "${homepage}",
+    "sources": "${sources}",
+    "issues": "${issues}"
   },
 
-  "license": "All Rights Reserved",
-  "icon": "unbreakables-icon.png",
+  "license": "${license}",
+  "icon": "${mod_id}.png",
 
   "environment": "*",
   "entrypoints": {
@@ -29,7 +29,8 @@
     ]
   },
   "mixins": [
-    "unbreakables.mixins.json"
+    "unbreakables.mixins.json",
+    "unbreakables.fabric.mixins.json"
   ],
   "depends": {
     "balm-fabric": ">=7.0.0",
