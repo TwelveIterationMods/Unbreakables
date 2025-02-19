@@ -49,7 +49,7 @@ public class RulesetLoader implements ResourceManagerReloadListener {
             }
         }
 
-        Unbreakables.logger.info("{} unbreakable rules loaded", loadedRules.size());
+        Unbreakables.logger.info("{} breakable rules loaded", loadedRules.size());
 
         final var server = Balm.getHooks().getServer();
         if (server != null) {
@@ -70,7 +70,7 @@ public class RulesetLoader implements ResourceManagerReloadListener {
                 continue;
             }
 
-            Unbreakables.logger.info("Loading unbreakable rule {}", rule);
+            Unbreakables.logger.info("Loading breakable rule {}", rule);
             RuleParser.parse(rule)
                     .filter(configuredModifier -> configuredModifier.requirement().modifier().isEnabled())
                     .ifPresent(loadedRules::add);
