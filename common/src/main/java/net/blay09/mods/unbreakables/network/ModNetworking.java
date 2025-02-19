@@ -6,6 +6,7 @@ public class ModNetworking {
 
     public static void initialize(BalmNetworking networking) {
         networking.registerClientboundPacket(UnbreakableRulesMessage.TYPE, UnbreakableRulesMessage.class, UnbreakableRulesMessage::encode, UnbreakableRulesMessage::decode, UnbreakableRulesMessage::handle);
+        networking.registerClientboundPacket(ClientboundUnbreakableStatusPacket.TYPE, ClientboundUnbreakableStatusPacket.class, ClientboundUnbreakableStatusPacket::encode, ClientboundUnbreakableStatusPacket::decode, ClientboundUnbreakableStatusPacket::handle);
     }
 
 }

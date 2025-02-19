@@ -1,8 +1,11 @@
 package net.blay09.mods.unbreakables;
 
+import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.blay09.mods.unbreakables.api.ConfiguredCondition;
+import net.blay09.mods.unbreakables.network.ClientboundUnbreakableStatusPacket;
+import net.blay09.mods.unbreakables.rules.requirements.ClientsideAssumedRequirement;
 import net.blay09.mods.unbreakables.rules.requirements.CombinedRequirement;
 import net.blay09.mods.unbreakables.rules.ConfiguredRule;
 import net.blay09.mods.unbreakables.rules.requirements.NoRequirement;
@@ -10,6 +13,7 @@ import net.blay09.mods.unbreakables.rules.RuleRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,6 +29,9 @@ public class BreakContextImpl implements BreakContext {
     private final BlockPos pos;
     private final BlockState state;
     private final Player player;
+
+    private boolean hasServersideConditions;
+    private BreakRequirement resolvedRequirement;
 
     public BreakContextImpl(BlockGetter blockGetter, BlockPos pos, BlockState state, Player player) {
         this.blockGetter = blockGetter;
@@ -65,12 +72,29 @@ public class BreakContextImpl implements BreakContext {
     }
 
     public BreakRequirement resolve() {
-        if (requirements.isEmpty()) {
-            return NoRequirement.INSTANCE;
-        } else if (requirements.size() == 1) {
-            return requirements.values().iterator().next();
+        if (resolvedRequirement != null) {
+            return resolvedRequirement;
         }
-        return new CombinedRequirement(requirements.values());
+
+        BreakRequirement result;
+        if (requirements.isEmpty()) {
+            result = NoRequirement.INSTANCE;
+        } else if (requirements.size() == 1) {
+            result = requirements.values().iterator().next();
+        } else {
+            result = new CombinedRequirement(requirements.values());
+        }
+        resolvedRequirement = result;
+
+        if (hasServersideConditions && player instanceof ServerPlayer) {
+            Balm.getNetworking().sendTo(player, new ClientboundUnbreakableStatusPacket(pos, resolvedRequirement.canAfford(player)));
+        }
+
+        return result;
+    }
+
+    public void resolve(BreakRequirement resolvedRequirement) {
+        this.resolvedRequirement = resolvedRequirement;
     }
 
     @Override
@@ -90,10 +114,14 @@ public class BreakContextImpl implements BreakContext {
 
     @Override
     public boolean viaServer(Function<ServerLevel, Boolean> runner) {
+        hasServersideConditions = true;
         if (blockGetter instanceof ServerLevel serverLevel) {
             return runner.apply(serverLevel);
         }
-        return true; // We start breaking normally on the client, the server will correct us.
+        // Server-side conditions are always false on the client.
+        // However, we mark the client to not simulate and instead start breaking until the server corrects us.
+        resolvedRequirement = ClientsideAssumedRequirement.INSTANCE;
+        return false;
     }
 
     @Override

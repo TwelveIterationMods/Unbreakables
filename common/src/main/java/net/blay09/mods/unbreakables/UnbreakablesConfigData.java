@@ -10,7 +10,7 @@ import java.util.List;
 
 @Config(Unbreakables.MOD_ID)
 public class UnbreakablesConfigData implements BalmConfigData {
-    @Comment("IDs of inbuilt rulesets to enable. For example, \"waystones:generated_waystones\" makes all generated waystones unbreakable.")
+    @Comment("IDs of inbuilt rulesets to enable. For example, \"waystones:generated_waystones\" makes all generated waystones breakable.")
     @ExpectedType(String.class)
     public List<String> rulesets = new ArrayList<>();
 
