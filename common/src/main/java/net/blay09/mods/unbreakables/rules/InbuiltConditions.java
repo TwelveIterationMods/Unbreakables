@@ -1,5 +1,6 @@
 package net.blay09.mods.unbreakables.rules;
 
+import com.mojang.datafixers.util.Pair;
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.parameter.FloatParameter;
 import net.blay09.mods.unbreakables.api.parameter.IdParameter;
@@ -7,14 +8,18 @@ import net.blay09.mods.unbreakables.api.parameter.PositionParameter;
 import net.blay09.mods.unbreakables.api.parameter.TaggableIdParameter;
 import net.blay09.mods.unbreakables.rules.parameters.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
@@ -154,6 +159,14 @@ public class InbuiltConditions {
                     final var dist = pos.distSqr(rulePos);
                     return dist <= maxDist * maxDist;
                 });
+
+        RuleRegistry.registerConditionResolver("is_near_poi",
+                IsNearPoiParameter.class,
+                (context, parameters) -> context.viaServer((serverLevel) -> {
+                    final var poi = serverLevel.getPoiManager()
+                            .findClosestWithType(it -> false, context.getPos(), (int) parameters.distance().value(), PoiManager.Occupancy.ANY);
+                    return poi.isPresent();
+                }));
     }
 
     private static Optional<LevelAccessor> pickLevelAccessor(BreakContext context) {
