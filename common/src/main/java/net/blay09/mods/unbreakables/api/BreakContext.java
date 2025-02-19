@@ -25,4 +25,6 @@ public interface BreakContext {
     BlockState getState();
 
     boolean viaServer(Function<ServerLevel, Boolean> runner);
+
+    BreakRequirement resolve();
 }

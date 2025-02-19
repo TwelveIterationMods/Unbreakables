@@ -8,6 +8,7 @@ public class ModNetworking {
 
     public static void initialize(BalmNetworking networking) {
         networking.registerClientboundPacket(id("unbreakable_rules"), UnbreakableRulesMessage.class, UnbreakableRulesMessage::encode, UnbreakableRulesMessage::decode, UnbreakableRulesMessage::handle);
+        networking.registerClientboundPacket(id("unbreakable_status"), ClientboundUnbreakableStatusPacket.class, ClientboundUnbreakableStatusPacket::encode, ClientboundUnbreakableStatusPacket::decode, ClientboundUnbreakableStatusPacket::handle);
     }
 
     private static ResourceLocation id(String path) {

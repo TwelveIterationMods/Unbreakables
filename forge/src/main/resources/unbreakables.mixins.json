@@ -6,9 +6,11 @@
   "refmap": "unbreakables.refmap.json",
   "mixins": [
     "BlockStateBaseAccessor",
-    "BlockStateBaseMixin"
+    "BlockStateBaseMixin",
+    "ServerPlayerGameModeMixin"
   ],
   "client": [
+    "MultiPlayerGameModeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
