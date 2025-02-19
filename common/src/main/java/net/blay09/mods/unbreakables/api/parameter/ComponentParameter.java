@@ -1,4 +1,4 @@
-package net.blay09.mods.unbreakables.rules.parameters;
+package net.blay09.mods.unbreakables.api.parameter;
 
 import net.minecraft.network.chat.Component;
 

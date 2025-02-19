@@ -1,5 +1,6 @@
 package net.blay09.mods.unbreakables.rules;
 
+import net.blay09.mods.unbreakables.api.parameter.*;
 import net.blay09.mods.unbreakables.rules.parameters.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
