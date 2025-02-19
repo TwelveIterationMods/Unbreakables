@@ -9,12 +9,14 @@ import net.blay09.mods.unbreakables.rules.requirements.NoRequirement;
 import net.blay09.mods.unbreakables.rules.RuleRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class BreakContextImpl implements BreakContext {
 
@@ -84,6 +86,14 @@ public class BreakContextImpl implements BreakContext {
     @Override
     public BlockState getState() {
         return state;
+    }
+
+    @Override
+    public boolean viaServer(Function<ServerLevel, Boolean> runner) {
+        if (blockGetter instanceof ServerLevel serverLevel) {
+            return runner.apply(serverLevel);
+        }
+        return true; // We start breaking normally on the client, the server will correct us.
     }
 
     @Override
