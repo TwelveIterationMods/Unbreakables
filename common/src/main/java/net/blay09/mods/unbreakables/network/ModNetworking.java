@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 public class ModNetworking {
 
     public static void initialize(BalmNetworking networking) {
+        networking.allowServerOnly(Unbreakables.MOD_ID);
+
         networking.registerClientboundPacket(id("unbreakable_rules"), UnbreakableRulesMessage.class, UnbreakableRulesMessage::encode, UnbreakableRulesMessage::decode, UnbreakableRulesMessage::handle);
         networking.registerClientboundPacket(id("unbreakable_status"), ClientboundUnbreakableStatusPacket.class, ClientboundUnbreakableStatusPacket::encode, ClientboundUnbreakableStatusPacket::decode, ClientboundUnbreakableStatusPacket::handle);
     }
