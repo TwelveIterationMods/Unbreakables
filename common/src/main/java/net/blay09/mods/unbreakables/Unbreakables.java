@@ -12,7 +12,6 @@ import net.blay09.mods.unbreakables.rules.InbuiltParameters;
 import net.blay09.mods.unbreakables.rules.InbuiltRequirements;
 import net.blay09.mods.unbreakables.rulesets.RulesetLoader;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
