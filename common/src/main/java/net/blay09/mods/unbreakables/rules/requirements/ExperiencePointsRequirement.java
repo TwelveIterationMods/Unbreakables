@@ -2,11 +2,11 @@ package net.blay09.mods.unbreakables.rules.requirements;
 
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.blay09.mods.unbreakables.api.BreakHint;
+import net.blay09.mods.unbreakables.rules.hint.ExperiencePointsHint;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.List;
+import java.util.Optional;
 
 public class ExperiencePointsRequirement implements BreakRequirement {
     private int points;
@@ -34,15 +34,13 @@ public class ExperiencePointsRequirement implements BreakRequirement {
     }
 
     @Override
-    public void appendHoverText(Player player, List<Component> tooltip) {
-        if (points > 0) {
-            tooltip.add(Component.translatable("chat.unbreakables.xp_requirement", points).withStyle(ChatFormatting.GREEN));
-        }
+    public boolean isEmpty() {
+        return points <= 0;
     }
 
     @Override
-    public boolean isEmpty() {
-        return points <= 0;
+    public Optional<BreakHint<?>> hint(BreakContext context, Player player) {
+        return Optional.of(new ExperiencePointsHint(points));
     }
 
     public static int calculateLevelCostFromExperiencePoints(int currentLevel, int xpLoss) {

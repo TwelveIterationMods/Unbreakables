@@ -1,9 +1,8 @@
 package net.blay09.mods.unbreakables.api;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface BreakRequirement {
     boolean canAfford(BreakContext context, Player player);
@@ -12,7 +11,9 @@ public interface BreakRequirement {
 
     void rollback(Player player);
 
-    void appendHoverText(Player player, List<Component> tooltip);
+    default Optional<BreakHint<?>> hint(BreakContext context, Player player) {
+        return Optional.empty();
+    }
 
     default boolean isEmpty() {
         return false;

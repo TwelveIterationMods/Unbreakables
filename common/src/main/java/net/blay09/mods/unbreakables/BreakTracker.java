@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,10 +37,14 @@ public class BreakTracker {
         });
     }
 
-    public static Optional<BreakContext> getContext(Player player, BlockPos pos) {
+    public static Optional<BreakContext> getContext(Player player) {
+        return getContext(player, null);
+    }
+
+    public static Optional<BreakContext> getContext(Player player, @Nullable BlockPos pos) {
         final var cacheKey = getKeyForPlayer(player);
         final var breakContext = contexts.get(cacheKey);
-        if (breakContext != null && breakContext.getPos().equals(pos)) {
+        if (breakContext != null && (pos == null || breakContext.getPos().equals(pos))) {
             return Optional.of(breakContext);
         }
         contexts.remove(cacheKey);

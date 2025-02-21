@@ -3,12 +3,12 @@ package net.blay09.mods.unbreakables.rules.requirements;
 import net.blay09.mods.unbreakables.CooldownTracker;
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.blay09.mods.unbreakables.api.BreakHint;
+import net.blay09.mods.unbreakables.rules.hint.CooldownHint;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.List;
+import java.util.Optional;
 
 public class CooldownRequirement implements BreakRequirement {
 
@@ -38,11 +38,9 @@ public class CooldownRequirement implements BreakRequirement {
     }
 
     @Override
-    public void appendHoverText(Player player, List<Component> tooltip) {
-        final var millisLeft = getCooldownMillisLeft(player);
-        if (millisLeft > 0) {
-            tooltip.add(Component.translatable("tooltip.waystones.cooldown_left", millisLeft / 1000).withStyle(ChatFormatting.GOLD));
-        }
+    public Optional<BreakHint<?>> hint(BreakContext context, Player player) {
+        final var secondsLeft = getCooldownMillisLeft(player) / 1000;
+        return Optional.of(new CooldownHint((int) secondsLeft));
     }
 
     private long getCooldownMillisLeft(Player player) {
