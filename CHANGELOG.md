@@ -1,13 +1,8 @@
-- Added `players_nearby` condition, e.g. `players_nearby(1)`
-- Added `mobs_nearby` condition, e.g. `mobs_nearby(1)`
-- Added `animals_nearby` condition, e.g. `animals_nearby(1)`
-- Added `entity_nearby` condition, e.g. `entity_nearby(minecraft:pig, 10, 1)` or `entity_nearby(#minecraft:skeletons, 10, 1)`
-- Added `is_above_y` condition, e.g. `is_above_y(45)`
-- Added `is_below_y` condition, e.g. `is_below_y(90)`
-- Added `is_at` condition, e.g. `is_at(12, 79, -25)`
-- Added `is_near` condition, e.g. `is_near(12, 79, -25, 8)`
-- Added `is_within` condition, e.g. `is_within(12, 79, -25, 20, 90, -10)`
-- Added `is_in_biome` condition, e.g. `is_in_biome(minecraft:plains)` or `is_in_biome(#minecraft:is_beach)`
-- Added `has_effect` condition, e.g. `has_effect(minecraft:strength, 2)`
-- Added `is_tool` condition, e.g. `is_tool(minecraft:diamond_pickaxe)` or `is_tool(#minecraft:pickaxes)`
-- Fix desync when breaking unbreakable blocks on servers
+- Added display of refusal hints when attempting to break an unbreakable block 
+- Added `is_near_poi` condition, e.g. `is_near_poi(#minecraft:village, 256)`
+- Added `add_cooldown`, `multiply_cooldown`, `scaled_add_cooldown`, `scaled_multiply_cooldown`, `min_cooldown`, `max_cooldown` modifiers, allowing for defining cooldowns on breaking blocks
+  - e.g. `add_cooldown(my_cooldown, 10)` for 10 seconds
+- Added support for server-side conditions with sync to client
+- Added support for installing the mod on servers only
+- Added API for mod compatibility
+- Improved performance by only checking breakability once instead of continuously
