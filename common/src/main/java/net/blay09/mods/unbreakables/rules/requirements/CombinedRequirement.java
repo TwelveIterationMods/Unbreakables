@@ -1,5 +1,6 @@
 package net.blay09.mods.unbreakables.rules.requirements;
 
+import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -16,8 +17,8 @@ public class CombinedRequirement implements BreakRequirement {
     }
 
     @Override
-    public boolean canAfford(Player player) {
-        return requirements.stream().allMatch(requirement -> requirement.canAfford(player));
+    public boolean canAfford(BreakContext context, Player player) {
+        return requirements.stream().allMatch(requirement -> requirement.canAfford(context, player));
     }
 
     @Override
