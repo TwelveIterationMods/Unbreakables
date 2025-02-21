@@ -1,5 +1,6 @@
 package net.blay09.mods.unbreakables.rules.requirements;
 
+import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -10,7 +11,7 @@ public class NoRequirement implements BreakRequirement {
     public static final BreakRequirement INSTANCE = new NoRequirement();
 
     @Override
-    public boolean canAfford(Player player) {
+    public boolean canAfford(BreakContext context, Player player) {
         return true;
     }
 
