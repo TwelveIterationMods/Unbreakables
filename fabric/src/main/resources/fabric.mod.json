@@ -23,6 +23,7 @@
       "net.blay09.mods.unbreakables.FabricUnbreakables"
     ],
     "client": [
+      "net.blay09.mods.unbreakables.client.FabricUnbreakablesClient"
     ],
     "modmenu": [
       "net.blay09.mods.unbreakables.compat.ModMenuIntegration"

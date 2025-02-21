@@ -4,12 +4,14 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.BreakBlockEvent;
 import net.blay09.mods.balm.api.event.EventPriority;
 import net.blay09.mods.balm.api.event.PlayerLoginEvent;
+import net.blay09.mods.unbreakables.api.UnbreakablesAPI;
 import net.blay09.mods.unbreakables.event.NewDigSpeedEvent;
 import net.blay09.mods.unbreakables.network.ModNetworking;
 import net.blay09.mods.unbreakables.network.UnbreakableRulesMessage;
 import net.blay09.mods.unbreakables.rules.InbuiltConditions;
 import net.blay09.mods.unbreakables.rules.InbuiltParameters;
 import net.blay09.mods.unbreakables.rules.InbuiltRequirements;
+import net.blay09.mods.unbreakables.rules.hint.*;
 import net.blay09.mods.unbreakables.rulesets.RulesetLoader;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -25,6 +27,14 @@ public class Unbreakables {
         InbuiltParameters.register();
         InbuiltConditions.register();
         InbuiltRequirements.register();
+
+        UnbreakablesAPI.registerHintSerializer(CombinedHint.ID, CombinedHint.CombinedBreakHintSerializer.INSTANCE);
+        UnbreakablesAPI.registerHintSerializer(NoHint.ID, NoHint.NoHintSerializer.INSTANCE);
+        UnbreakablesAPI.registerHintSerializer(MessageHint.ID, MessageHint.MessageHintSerializer.INSTANCE);
+        UnbreakablesAPI.registerHintSerializer(CooldownHint.ID, CooldownHint.CooldownHintSerializer.INSTANCE);
+        UnbreakablesAPI.registerHintSerializer(ExperienceLevelHint.ID, ExperienceLevelHint.ExperienceLevelHintSerializer.INSTANCE);
+        UnbreakablesAPI.registerHintSerializer(ExperiencePointsHint.ID, ExperiencePointsHint.ExperiencePointsHintSerializer.INSTANCE);
+        UnbreakablesAPI.registerHintSerializer(ItemHint.ID, ItemHint.ItemHintSerializer.INSTANCE);
 
         UnbreakablesConfig.initialize();
 

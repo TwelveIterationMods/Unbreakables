@@ -2,12 +2,12 @@ package net.blay09.mods.unbreakables.rules.requirements;
 
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.blay09.mods.unbreakables.api.BreakHint;
+import net.blay09.mods.unbreakables.rules.hint.ItemHint;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.List;
+import java.util.Optional;
 
 public class ItemRequirement implements BreakRequirement {
 
@@ -57,7 +57,7 @@ public class ItemRequirement implements BreakRequirement {
     @Override
     public void rollback(Player player) {
         var added = 0;
-        while(added < count) {
+        while (added < count) {
             final var leftToAdd = count - added;
             final var itemStack = this.itemStack.copy();
             itemStack.setCount(Math.min(itemStack.getMaxStackSize(), leftToAdd));
@@ -69,15 +69,13 @@ public class ItemRequirement implements BreakRequirement {
     }
 
     @Override
-    public void appendHoverText(Player player, List<Component> tooltip) {
-        if (count > 0) {
-            tooltip.add(Component.translatable("chat.unbreakables.item_requirement", count, itemStack.getHoverName()).withStyle(ChatFormatting.LIGHT_PURPLE));
-        }
+    public boolean isEmpty() {
+        return itemStack.isEmpty() || count <= 0;
     }
 
     @Override
-    public boolean isEmpty() {
-        return itemStack.isEmpty() || count <= 0;
+    public Optional<BreakHint<?>> hint(BreakContext context, Player player) {
+        return Optional.of(new ItemHint(itemStack, count, canAfford(context, player)));
     }
 
     public ItemStack getItemStack() {

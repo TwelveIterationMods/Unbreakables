@@ -2,12 +2,12 @@ package net.blay09.mods.unbreakables.rules.requirements;
 
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
-import net.minecraft.network.chat.Component;
+import net.blay09.mods.unbreakables.api.BreakHint;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.List;
+import java.util.Optional;
 
-public record ServersideResponseRequirement(boolean breakable) implements BreakRequirement {
+public record ServersideResponseRequirement(BreakHint<?> hint, boolean breakable) implements BreakRequirement {
     @Override
     public boolean canAfford(BreakContext context, Player player) {
         return breakable;
@@ -22,6 +22,7 @@ public record ServersideResponseRequirement(boolean breakable) implements BreakR
     }
 
     @Override
-    public void appendHoverText(Player player, List<Component> tooltip) {
+    public Optional<BreakHint<?>> hint(BreakContext context, Player player) {
+        return Optional.of(hint);
     }
 }

@@ -5,6 +5,7 @@ import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.blay09.mods.unbreakables.api.ConfiguredCondition;
 import net.blay09.mods.unbreakables.network.ClientboundUnbreakableStatusPacket;
+import net.blay09.mods.unbreakables.rules.hint.NoHint;
 import net.blay09.mods.unbreakables.rules.requirements.ClientsideAssumedRequirement;
 import net.blay09.mods.unbreakables.rules.requirements.CombinedRequirement;
 import net.blay09.mods.unbreakables.rules.ConfiguredRule;
@@ -88,7 +89,7 @@ public class BreakContextImpl implements BreakContext {
 
         boolean breakable = resolvedRequirement.canAfford(this, player);
         if (hasServersideConditions && player instanceof ServerPlayer) {
-            Balm.getNetworking().sendTo(player, new ClientboundUnbreakableStatusPacket(pos, breakable));
+            Balm.getNetworking().sendTo(player, new ClientboundUnbreakableStatusPacket(pos, result.hint(this, player).orElse(NoHint.INSTANCE), breakable));
         }
 
         return result;

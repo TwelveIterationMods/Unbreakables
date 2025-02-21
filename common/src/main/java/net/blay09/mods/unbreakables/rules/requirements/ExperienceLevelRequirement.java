@@ -2,11 +2,11 @@ package net.blay09.mods.unbreakables.rules.requirements;
 
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.blay09.mods.unbreakables.api.BreakHint;
+import net.blay09.mods.unbreakables.rules.hint.ExperienceLevelHint;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.List;
+import java.util.Optional;
 
 public class ExperienceLevelRequirement implements BreakRequirement {
     private int levels;
@@ -31,15 +31,13 @@ public class ExperienceLevelRequirement implements BreakRequirement {
     }
 
     @Override
-    public void appendHoverText(Player player, List<Component> tooltip) {
-        if (levels > 0) {
-            tooltip.add(Component.translatable("chat.unbreakables.level_requirement", levels).withStyle(ChatFormatting.GREEN));
-        }
+    public boolean isEmpty() {
+        return levels <= 0;
     }
 
     @Override
-    public boolean isEmpty() {
-        return levels <= 0;
+    public Optional<BreakHint<?>> hint(BreakContext context, Player player) {
+        return Optional.of(new ExperienceLevelHint(levels));
     }
 
     public void setLevels(int levels) {

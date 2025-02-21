@@ -2,19 +2,14 @@ package net.blay09.mods.unbreakables.rules.requirements;
 
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
-import net.minecraft.network.chat.Component;
+import net.blay09.mods.unbreakables.rules.hint.CombinedHint;
+import net.blay09.mods.unbreakables.api.BreakHint;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Optional;
 
-public class CombinedRequirement implements BreakRequirement {
-
-    private final Collection<BreakRequirement> requirements;
-
-    public CombinedRequirement(Collection<BreakRequirement> requirements) {
-        this.requirements = requirements;
-    }
+public record CombinedRequirement(Collection<BreakRequirement> requirements) implements BreakRequirement {
 
     @Override
     public boolean canAfford(BreakContext context, Player player) {
@@ -32,16 +27,16 @@ public class CombinedRequirement implements BreakRequirement {
     }
 
     @Override
-    public void appendHoverText(Player player, List<Component> tooltip) {
-        requirements.forEach(requirement -> requirement.appendHoverText(player, tooltip));
+    public Optional<BreakHint<?>> hint(BreakContext context, Player player) {
+        return Optional.of(new CombinedHint(requirements.stream()
+                .map(it -> it.hint(context, player))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList()));
     }
 
     @Override
     public boolean isEmpty() {
         return requirements.stream().allMatch(BreakRequirement::isEmpty);
-    }
-
-    public Collection<BreakRequirement> getRequirements() {
-        return requirements;
     }
 }
