@@ -86,8 +86,9 @@ public class BreakContextImpl implements BreakContext {
         }
         resolvedRequirement = result;
 
+        boolean breakable = resolvedRequirement.canAfford(this, player);
         if (hasServersideConditions && player instanceof ServerPlayer) {
-            Balm.getNetworking().sendTo(player, new ClientboundUnbreakableStatusPacket(pos, resolvedRequirement.canAfford(player)));
+            Balm.getNetworking().sendTo(player, new ClientboundUnbreakableStatusPacket(pos, breakable));
         }
 
         return result;

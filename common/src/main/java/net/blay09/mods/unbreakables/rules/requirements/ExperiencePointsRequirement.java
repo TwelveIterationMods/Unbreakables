@@ -1,5 +1,6 @@
 package net.blay09.mods.unbreakables.rules.requirements;
 
+import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -15,7 +16,7 @@ public class ExperiencePointsRequirement implements BreakRequirement {
     }
 
     @Override
-    public boolean canAfford(Player player) {
+    public boolean canAfford(BreakContext context, Player player) {
         final var xpForLevel = getCumulativeXpNeededForLevel(player.experienceLevel);
         final var xpForProgress = Math.floor(player.experienceProgress * getXpNeededForNextLevel(player.experienceLevel));
         final var totalXp = xpForLevel + xpForProgress;

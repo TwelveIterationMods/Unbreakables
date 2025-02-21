@@ -45,7 +45,7 @@ public class Unbreakables {
                     event.getPlayer(),
                     (context) -> RulesetLoader.getLoadedRules().forEach(it -> ((BreakContextImpl) context).apply(it)));
             final var requirement = breakContext.resolve();
-            if (!requirement.canAfford(event.getPlayer())) {
+            if (!requirement.canAfford(breakContext, event.getPlayer())) {
                 event.setSpeedOverride(0f);
             }
         });
@@ -59,7 +59,7 @@ public class Unbreakables {
             final var breakContext = new BreakContextImpl(event.getLevel(), event.getPos(), event.getState(), event.getPlayer());
             RulesetLoader.getLoadedRules().forEach(breakContext::apply);
             final var requirement = breakContext.resolve();
-            if (!requirement.canAfford(event.getPlayer())) {
+            if (!requirement.canAfford(breakContext, event.getPlayer())) {
                 event.setCanceled(true);
             }
         }, EventPriority.Highest);
@@ -73,7 +73,7 @@ public class Unbreakables {
             final var breakContext = new BreakContextImpl(event.getLevel(), event.getPos(), event.getState(), event.getPlayer());
             RulesetLoader.getLoadedRules().forEach(breakContext::apply);
             final var requirement = breakContext.resolve();
-            if (!requirement.canAfford(event.getPlayer())) {
+            if (!requirement.canAfford(breakContext, event.getPlayer())) {
                 event.setCanceled(true);
             } else {
                 requirement.consume(event.getPlayer());

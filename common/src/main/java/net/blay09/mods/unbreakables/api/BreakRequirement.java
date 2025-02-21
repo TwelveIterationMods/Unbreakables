@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import java.util.List;
 
 public interface BreakRequirement {
-    boolean canAfford(Player player);
+    boolean canAfford(BreakContext context, Player player);
 
     void consume(Player player);
 

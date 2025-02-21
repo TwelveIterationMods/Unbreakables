@@ -4,10 +4,7 @@ import net.blay09.mods.unbreakables.api.parameter.ComponentParameter;
 import net.blay09.mods.unbreakables.api.parameter.FloatParameter;
 import net.blay09.mods.unbreakables.api.parameter.IntParameter;
 import net.blay09.mods.unbreakables.rules.parameters.*;
-import net.blay09.mods.unbreakables.rules.requirements.ExperienceLevelRequirementType;
-import net.blay09.mods.unbreakables.rules.requirements.ExperiencePointsRequirementType;
-import net.blay09.mods.unbreakables.rules.requirements.ItemRequirementType;
-import net.blay09.mods.unbreakables.rules.requirements.RefuseRequirement;
+import net.blay09.mods.unbreakables.rules.requirements.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 
@@ -15,10 +12,12 @@ public class InbuiltRequirements {
     public static void register() {
         final var experiencePointRequirements = new ExperiencePointsRequirementType();
         final var experienceLevelRequirements = new ExperienceLevelRequirementType();
+        final var cooldownRequirements = new CooldownRequirementType();
         final var itemRequirements = new ItemRequirementType();
 
         RuleRegistry.register(experiencePointRequirements);
         RuleRegistry.register(experienceLevelRequirements);
+        RuleRegistry.register(cooldownRequirements);
         RuleRegistry.register(itemRequirements);
 
         RuleRegistry.registerModifier("add_level_cost", experienceLevelRequirements, FloatParameter.class, (cost, context, parameters) -> {
@@ -72,6 +71,33 @@ public class InbuiltRequirements {
         }, () -> true);
         RuleRegistry.registerModifier("max_xp_cost", experiencePointRequirements, IntParameter.class, (cost, context, parameters) -> {
             cost.setPoints(Math.min(cost.getPoints(), parameters.value()));
+            return cost;
+        }, () -> true);
+
+        RuleRegistry.registerModifier("add_cooldown", cooldownRequirements, CooldownParameter.class, (cost, context, parameters) -> {
+            cost.setCooldown(parameters.id().value(), (int) ((float) cost.getCooldownSeconds() + parameters.seconds().value()));
+            return cost;
+        }, () -> true);
+        RuleRegistry.registerModifier("multiply_cooldown", cooldownRequirements, CooldownParameter.class, (cost, context, parameters) -> {
+            cost.setCooldown(parameters.id().value(), (int) ((float) cost.getCooldownSeconds() * parameters.seconds().value()));
+            return cost;
+        }, () -> true);
+        RuleRegistry.registerModifier("scaled_add_cooldown", cooldownRequirements, VariableScaledCooldownParameter.class, (cost, context, parameters) -> {
+            final var sourceValue = context.getContextValue(parameters.variable().value());
+            cost.setCooldown(parameters.cooldown().value(), (int) ((float) cost.getCooldownSeconds() + sourceValue * parameters.seconds().value()));
+            return cost;
+        }, () -> true);
+        RuleRegistry.registerModifier("scaled_multiply_cooldown", cooldownRequirements, VariableScaledCooldownParameter.class, (cost, context, parameters) -> {
+            final var sourceValue = context.getContextValue(parameters.variable().value());
+            cost.setCooldown(parameters.cooldown().value(), (int) ((float) cost.getCooldownSeconds() * sourceValue * parameters.seconds().value()));
+            return cost;
+        }, () -> true);
+        RuleRegistry.registerModifier("min_cooldown", cooldownRequirements, CooldownParameter.class, (cost, context, parameters) -> {
+            cost.setCooldown(parameters.id().value(), (int) Math.max(cost.getCooldownSeconds(), parameters.seconds().value()));
+            return cost;
+        }, () -> true);
+        RuleRegistry.registerModifier("max_cooldown", cooldownRequirements, CooldownParameter.class, (cost, context, parameters) -> {
+            cost.setCooldown(parameters.id().value(), (int) Math.min(cost.getCooldownSeconds(), parameters.seconds().value()));
             return cost;
         }, () -> true);
 
