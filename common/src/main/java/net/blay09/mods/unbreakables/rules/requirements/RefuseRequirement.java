@@ -2,11 +2,12 @@ package net.blay09.mods.unbreakables.rules.requirements;
 
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
-import net.minecraft.ChatFormatting;
+import net.blay09.mods.unbreakables.api.BreakHint;
+import net.blay09.mods.unbreakables.rules.hint.MessageHint;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.List;
+import java.util.Optional;
 
 public class RefuseRequirement implements BreakRequirement {
 
@@ -33,8 +34,8 @@ public class RefuseRequirement implements BreakRequirement {
     }
 
     @Override
-    public void appendHoverText(Player player, List<Component> tooltip) {
-        tooltip.add(message.copy().withStyle(ChatFormatting.RED));
+    public Optional<BreakHint<?>> hint(BreakContext context, Player player) {
+        return Optional.of(new MessageHint(message));
     }
 
     public void setMessage(Component message) {

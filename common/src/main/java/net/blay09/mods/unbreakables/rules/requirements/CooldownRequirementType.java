@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class CooldownRequirementType implements RequirementType<CooldownRequirement> {
 
-    public static final ResourceLocation ID = new ResourceLocation(Unbreakables.MOD_ID, "cooldown");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, "cooldown");
 
     @Override
     public ResourceLocation getId() {

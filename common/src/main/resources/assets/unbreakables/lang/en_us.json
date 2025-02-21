@@ -1,6 +1,8 @@
 {
   "config.unbreakables.title": "Unbreakables",
-  "chat.unbreakables.level_requirement": "Level Cost: %d",
-  "chat.unbreakables.xp_requirement": "Experience Cost: %d",
-  "chat.unbreakables.item_requirement": "Item Cost: %d %s"
+  "gui.unbreakables.cooldown": "%d seconds left",
+  "gui.unbreakables.cooldown_ready": "Ready",
+  "gui.unbreakables.xp_points": "%d xp",
+  "gui.unbreakables.xp_levels": "%d levels",
+  "gui.unbreakables.item": "%dx %s"
 }
