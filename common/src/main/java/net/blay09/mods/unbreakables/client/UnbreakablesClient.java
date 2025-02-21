@@ -31,7 +31,7 @@ public class UnbreakablesClient {
                     requirement.hint(context, player).ifPresent(hint -> {
                         @SuppressWarnings("rawtypes") final var renderer = (BreakHintRenderer) BreakHintClientRegistry.getRenderer(hint.id());
                         if (renderer != null) {
-                            final var partialTicks = Minecraft.getInstance().getTimer().getRealtimeDeltaTicks();
+                            final var partialTicks = Minecraft.getInstance().getDeltaTracker().getRealtimeDeltaTicks();
                             renderer.render(event.getWindow(), event.getGuiGraphics(), partialTicks, hint);
                         }
                     });
