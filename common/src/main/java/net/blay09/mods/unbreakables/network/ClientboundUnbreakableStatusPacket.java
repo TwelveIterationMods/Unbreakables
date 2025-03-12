@@ -8,6 +8,7 @@ import net.blay09.mods.unbreakables.rules.hint.BreakHintRegistry;
 import net.blay09.mods.unbreakables.rules.requirements.ServersideResponseRequirement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +16,11 @@ import net.minecraft.world.entity.player.Player;
 public record ClientboundUnbreakableStatusPacket(BlockPos pos, BreakHint<?> hint, boolean breakable) implements CustomPacketPayload {
 
     public static Type<ClientboundUnbreakableStatusPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, "unbreakable_status"));
+
+    public static StreamCodec<RegistryFriendlyByteBuf, ClientboundUnbreakableStatusPacket> STREAM_CODEC = StreamCodec.of(
+            ClientboundUnbreakableStatusPacket::encode,
+            ClientboundUnbreakableStatusPacket::decode
+    );
 
     @SuppressWarnings("unchecked")
     public static void encode(RegistryFriendlyByteBuf buf, ClientboundUnbreakableStatusPacket message) {

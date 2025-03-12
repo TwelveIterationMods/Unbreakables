@@ -8,8 +8,8 @@ public class ModNetworking {
     public static void initialize(BalmNetworking networking) {
         networking.allowServerOnly(Unbreakables.MOD_ID);
 
-        networking.registerClientboundPacket(UnbreakableRulesMessage.TYPE, UnbreakableRulesMessage.class, UnbreakableRulesMessage::encode, UnbreakableRulesMessage::decode, UnbreakableRulesMessage::handle);
-        networking.registerClientboundPacket(ClientboundUnbreakableStatusPacket.TYPE, ClientboundUnbreakableStatusPacket.class, ClientboundUnbreakableStatusPacket::encode, ClientboundUnbreakableStatusPacket::decode, ClientboundUnbreakableStatusPacket::handle);
+        networking.registerClientboundPacket(UnbreakableRulesMessage.TYPE, UnbreakableRulesMessage.class, UnbreakableRulesMessage.STREAM_CODEC, UnbreakableRulesMessage::handle);
+        networking.registerClientboundPacket(ClientboundUnbreakableStatusPacket.TYPE, ClientboundUnbreakableStatusPacket.class, ClientboundUnbreakableStatusPacket.STREAM_CODEC, ClientboundUnbreakableStatusPacket::handle);
     }
 
 }

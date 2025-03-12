@@ -11,15 +11,14 @@ public class CooldownTracker {
 
     public static CompoundTag getUnbreakablesData(Player player) {
         final var playerData = Balm.getHooks().getPersistentData(player);
-        final var unbreakablesData = playerData.getCompound(Unbreakables.MOD_ID);
+        final var unbreakablesData = playerData.getCompoundOrEmpty(Unbreakables.MOD_ID);
         playerData.put(Unbreakables.MOD_ID, unbreakablesData);
         return unbreakablesData;
     }
 
     public static long getCooldownUntil(Player player, ResourceLocation id) {
         final var data = getUnbreakablesData(player);
-        final var cooldowns = data.getCompound(COOLDOWNS);
-        return cooldowns.getLong(id.toString());
+        return data.getCompound(COOLDOWNS).flatMap(it -> it.getLong(id.toString())).orElse(0L);
     }
 
     public static long getCooldownMillisLeft(Player player, ResourceLocation id) {
@@ -29,7 +28,7 @@ public class CooldownTracker {
 
     public static void setCooldownUntil(Player player, ResourceLocation id, long timestamp) {
         final var data = getUnbreakablesData(player);
-        final var cooldowns = data.getCompound(COOLDOWNS);
+        final var cooldowns = data.getCompoundOrEmpty(COOLDOWNS);
         cooldowns.putLong(id.toString(), timestamp);
         data.put(COOLDOWNS, cooldowns);
     }
