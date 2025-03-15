@@ -6,6 +6,7 @@ import net.blay09.mods.unbreakables.BreakTracker;
 import net.blay09.mods.unbreakables.api.client.BreakHintRenderer;
 import net.blay09.mods.unbreakables.api.client.UnbreakablesClientAPI;
 import net.blay09.mods.unbreakables.client.hint.*;
+import net.blay09.mods.unbreakables.mixin.MultiPlayerGameModeAccessor;
 import net.blay09.mods.unbreakables.rules.hint.*;
 import net.minecraft.client.Minecraft;
 
@@ -26,7 +27,12 @@ public class UnbreakablesClient {
                     return;
                 }
 
-                BreakTracker.getContext(player).ifPresent(context -> {
+                final var gameMode = Minecraft.getInstance().gameMode;
+                if (gameMode == null || !gameMode.isDestroying()) {
+                    return;
+                }
+
+                BreakTracker.getContext(player, ((MultiPlayerGameModeAccessor) gameMode).getDestroyBlockPos()).ifPresent(context -> {
                     final var requirement = context.resolve();
                     requirement.hint(context, player).ifPresent(hint -> {
                         @SuppressWarnings("rawtypes") final var renderer = (BreakHintRenderer) BreakHintClientRegistry.getRenderer(hint.id());
