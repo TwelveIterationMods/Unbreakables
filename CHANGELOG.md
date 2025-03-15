@@ -1,8 +1,1 @@
-- Added display of refusal hints when attempting to break an unbreakable block 
-- Added `is_near_poi` condition, e.g. `is_near_poi(#minecraft:village, 256)`
-- Added `add_cooldown`, `multiply_cooldown`, `scaled_add_cooldown`, `scaled_multiply_cooldown`, `min_cooldown`, `max_cooldown` modifiers, allowing for defining cooldowns on breaking blocks
-  - e.g. `add_cooldown(my_cooldown, 10)` for 10 seconds
-- Added support for server-side conditions with sync to client
-- Added support for installing the mod on servers only
-- Added API for mod compatibility
-- Improved performance by only checking breakability once instead of continuously
+- Fixed unbreakable hints sometimes displaying even while not trying to break the block
