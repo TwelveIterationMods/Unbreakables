@@ -9,7 +9,8 @@
     "ServerPlayerGameModeMixin"
   ],
   "client": [
-    "MultiPlayerGameModeMixin"
+    "MultiPlayerGameModeMixin",
+    "MultiPlayerGameModeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
