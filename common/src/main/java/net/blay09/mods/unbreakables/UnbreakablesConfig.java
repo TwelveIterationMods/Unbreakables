@@ -1,14 +1,28 @@
 package net.blay09.mods.unbreakables;
 
 import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.api.config.reflection.Comment;
+import net.blay09.mods.balm.api.config.reflection.Config;
+import net.blay09.mods.balm.api.config.reflection.NestedType;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Config(Unbreakables.MOD_ID)
 public class UnbreakablesConfig {
-    public static UnbreakablesConfigData getActive() {
-        return Balm.getConfig().getActive(UnbreakablesConfigData.class);
+    @Comment("IDs of inbuilt rulesets to enable. For example, \"waystones:generated_waystones\" makes all generated waystones breakable.")
+    @NestedType(String.class)
+    public List<String> rulesets = new ArrayList<>();
+
+    @Comment("List of custom rules with comma-separated parameters in parentheses. Conditions can be defined as comma-separated list in square brackets. Will be applied in order.")
+    @NestedType(String.class)
+    public List<String> rules = new ArrayList<>();
+
+    public static UnbreakablesConfig getActive() {
+        return Balm.getConfig().getActiveConfig(UnbreakablesConfig.class);
     }
 
     public static void initialize() {
-        Balm.getConfig().registerConfig(UnbreakablesConfigData.class, null);
+        Balm.getConfig().registerConfig(UnbreakablesConfig.class);
     }
-
 }
