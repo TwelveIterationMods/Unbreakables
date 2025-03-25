@@ -1,5 +1,5 @@
 {
-  "config.unbreakables.title": "Unbreakables",
+  "unbreakables.configuration.title": "Unbreakables",
   "gui.unbreakables.cooldown": "%d seconds left",
   "gui.unbreakables.cooldown_ready": "Ready",
   "gui.unbreakables.xp_points": "%d xp",
