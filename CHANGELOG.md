@@ -1,1 +1,1 @@
-- Fixed unbreakable hints sometimes displaying even while not trying to break the block
+- Fixed crash when dealing with multiple threads
