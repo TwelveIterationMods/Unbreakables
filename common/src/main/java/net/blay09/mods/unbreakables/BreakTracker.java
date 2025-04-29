@@ -7,15 +7,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class BreakTracker {
 
-    private static final Map<UUID, BreakContext> contexts = new HashMap<>();
+    private static final Map<UUID, BreakContext> contexts = Collections.synchronizedMap(new HashMap<>());
 
     public static void startBreak(Player player) {
         contexts.remove(getKeyForPlayer(player));
