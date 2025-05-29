@@ -10,14 +10,14 @@ public class CombinedHintRenderer implements BreakHintRenderer<CombinedHint> {
     @Override
     public void render(Window window, GuiGraphics guiGraphics, float partialTicks, CombinedHint hint) {
         final var poseStack = guiGraphics.pose();
-        poseStack.pushPose();
+        poseStack.pushMatrix();
         for (final var child : hint.hints()) {
             @SuppressWarnings("rawtypes") final var childRenderer = (BreakHintRenderer) BreakHintClientRegistry.getRenderer(child.id());
             if (childRenderer != null) {
                 childRenderer.render(window, guiGraphics, partialTicks, child);
-                poseStack.translate(0f, 16f, 0f);
+                poseStack.translate(0f, 16f);
             }
         }
-        poseStack.popPose();
+        poseStack.popMatrix();
     }
 }

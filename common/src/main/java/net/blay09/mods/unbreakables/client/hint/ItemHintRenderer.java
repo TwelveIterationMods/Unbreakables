@@ -8,6 +8,7 @@ import net.blay09.mods.unbreakables.rules.hint.ItemHint;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,18 +26,18 @@ public class ItemHintRenderer implements BreakHintRenderer<ItemHint> {
         final var textWidth = font.width(component);
         final var x = window.getGuiScaledWidth() / 2 - 8 - textWidth / 2;
         final var y = window.getGuiScaledHeight() / 2 - 8 + 16;
-        guiGraphics.blit(RenderType::guiTextured, TEXTURE, x, y, 48, 0, 16, 16, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 48, 0, 16, 16, 256, 256);
         final var poseStack = guiGraphics.pose();
-        poseStack.pushPose();
-        poseStack.translate(x + 5, y + 7, 1);
-        poseStack.scale(0.5f, 0.5f, 0.5f);
+        poseStack.pushMatrix();
+        poseStack.translate(x + 5, y + 7); // TODO z 1
+        poseStack.scale(0.5f, 0.5f);
         guiGraphics.renderFakeItem(hint.itemStack(), 0, 0);
-        poseStack.popPose();
+        poseStack.popMatrix();
         if (!canAfford) {
-            poseStack.pushPose();
-            poseStack.translate(0, 0, 302);
-            guiGraphics.blit(RenderType::guiTextured, TEXTURE, x, y, 64, 0, 16, 16, 256, 256);
-            poseStack.popPose();
+            poseStack.pushMatrix();
+            // TODO z 302
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 64, 0, 16, 16, 256, 256);
+            poseStack.popMatrix();
         }
         guiGraphics.drawString(font, component, x + 16 + 4, y + 8 - font.lineHeight / 2 + 1, 0xFFFFFFFF);
     }

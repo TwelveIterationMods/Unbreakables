@@ -8,6 +8,6 @@ import net.fabricmc.api.ClientModInitializer;
 public class FabricUnbreakablesClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        BalmClient.initialize(Unbreakables.MOD_ID, EmptyLoadContext.INSTANCE, UnbreakablesClient::initialize);
+        BalmClient.initializeMod(Unbreakables.MOD_ID, EmptyLoadContext.INSTANCE, UnbreakablesClient::initialize);
     }
 }

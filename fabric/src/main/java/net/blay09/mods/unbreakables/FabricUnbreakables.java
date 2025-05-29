@@ -7,6 +7,6 @@ import net.fabricmc.api.ModInitializer;
 public class FabricUnbreakables implements ModInitializer {
     @Override
     public void onInitialize() {
-        Balm.initialize(Unbreakables.MOD_ID, EmptyLoadContext.INSTANCE, Unbreakables::initialize);
+        Balm.initializeMod(Unbreakables.MOD_ID, EmptyLoadContext.INSTANCE, Unbreakables::initialize);
     }
 }

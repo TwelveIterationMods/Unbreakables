@@ -6,7 +6,7 @@ import net.blay09.mods.unbreakables.api.client.BreakHintRenderer;
 import net.blay09.mods.unbreakables.rules.hint.MessageHint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 
 public class MessageHintRenderer implements BreakHintRenderer<MessageHint> {
@@ -18,7 +18,7 @@ public class MessageHintRenderer implements BreakHintRenderer<MessageHint> {
         final var textWidth = font.width(hint.component());
         final var x = window.getGuiScaledWidth() / 2 - 8 - textWidth / 2;
         final var y = window.getGuiScaledHeight() / 2 - 8 + 16;
-        guiGraphics.blit(RenderType::guiTextured, TEXTURE, x, y, 0, 0, 16, 16, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, 16, 16, 256, 256);
         guiGraphics.drawString(font, hint.component(), x + 16 + 4, y + 8 - font.lineHeight / 2 + 1, 0xFFFFFFFF);
     }
 }

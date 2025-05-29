@@ -1,1 +1,1 @@
-- Fixed crash when dealing with multiple threads
+- Updated to Minecraft 1.21.6
