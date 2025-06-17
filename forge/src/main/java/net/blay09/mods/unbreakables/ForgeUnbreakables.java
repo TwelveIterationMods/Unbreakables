@@ -15,7 +15,7 @@ public class ForgeUnbreakables {
         final var loadContext = new ForgeLoadContext(context.getModEventBus());
         Balm.initializeMod(Unbreakables.MOD_ID, loadContext, Unbreakables::initialize);
         if (FMLEnvironment.dist.isClient()) {
-            BalmClient.initialize(Unbreakables.MOD_ID, loadContext, UnbreakablesClient::initialize);
+            BalmClient.initializeMod(Unbreakables.MOD_ID, loadContext, UnbreakablesClient::initialize);
         }
     }
 

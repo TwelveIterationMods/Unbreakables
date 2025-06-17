@@ -12,6 +12,6 @@ public class NeoForgeUnbreakablesClient {
 
     public NeoForgeUnbreakablesClient(IEventBus modEventBus) {
         final var context = new NeoForgeLoadContext(modEventBus);
-        BalmClient.initialize(Unbreakables.MOD_ID, context, UnbreakablesClient::initialize);
+        BalmClient.initializeMod(Unbreakables.MOD_ID, context, UnbreakablesClient::initialize);
     }
 }
