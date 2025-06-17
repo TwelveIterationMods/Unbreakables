@@ -10,6 +10,6 @@ public class NeoForgeUnbreakables {
 
     public NeoForgeUnbreakables(IEventBus modEventBus) {
         final var context = new NeoForgeLoadContext(modEventBus);
-        Balm.initialize(Unbreakables.MOD_ID, context, Unbreakables::initialize);
+        Balm.initializeMod(Unbreakables.MOD_ID, context, Unbreakables::initialize);
     }
 }
