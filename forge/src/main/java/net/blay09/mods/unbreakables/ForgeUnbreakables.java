@@ -12,7 +12,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 public class ForgeUnbreakables {
 
     public ForgeUnbreakables(FMLJavaModLoadingContext context) {
-        final var loadContext = new ForgeLoadContext(context.getModEventBus());
+        final var loadContext = new ForgeLoadContext(context.getModBusGroup());
         Balm.initializeMod(Unbreakables.MOD_ID, loadContext, Unbreakables::initialize);
         if (FMLEnvironment.dist.isClient()) {
             BalmClient.initializeMod(Unbreakables.MOD_ID, loadContext, UnbreakablesClient::initialize);
