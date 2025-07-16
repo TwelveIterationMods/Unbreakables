@@ -1,1 +1,1 @@
-- Fixed crash when dealing with multiple threads
+- Added `is_player` condition to check against fake players
