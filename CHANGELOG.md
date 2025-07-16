@@ -1,1 +1,1 @@
-- Updated to Minecraft 1.21.7
+- Added `is_player` condition to check against fake players
