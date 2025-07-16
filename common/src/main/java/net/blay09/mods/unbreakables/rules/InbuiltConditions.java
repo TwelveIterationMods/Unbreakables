@@ -1,5 +1,6 @@
 package net.blay09.mods.unbreakables.rules;
 
+import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.parameter.*;
 import net.blay09.mods.unbreakables.rules.parameters.*;
@@ -167,6 +168,10 @@ public class InbuiltConditions {
                             .findClosestWithType(it -> false, context.getPos(), (int) parameters.distance().value(), PoiManager.Occupancy.ANY);
                     return poi.isPresent();
                 }));
+
+        RuleRegistry.registerConditionResolver("is_player",
+                IsNearParameter.class,
+                (context, parameters) -> !Balm.getHooks().isFakePlayer(context.getPlayer()));
     }
 
     private static Optional<LevelAccessor> pickLevelAccessor(BreakContext context) {
