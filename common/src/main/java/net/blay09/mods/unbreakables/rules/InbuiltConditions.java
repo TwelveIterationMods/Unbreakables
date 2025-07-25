@@ -7,6 +7,7 @@ import net.blay09.mods.unbreakables.rules.parameters.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
@@ -172,6 +173,18 @@ public class InbuiltConditions {
         RuleRegistry.registerConditionResolver("is_player",
                 IsNearParameter.class,
                 (context, parameters) -> !Balm.getHooks().isFakePlayer(context.getPlayer()));
+
+        RuleRegistry.registerConditionResolver("has_advancement",
+                IdParameter.class,
+                (context, parameters) -> context.viaServer((serverLevel) -> {
+                    final var player = ((ServerPlayer) context.getPlayer());
+                    final var advancement = player.getServer().getAdvancements().getAdvancement(parameters.value());
+                    if (advancement != null) {
+                        return player.getAdvancements().getOrStartProgress(advancement).isDone();
+                    } else {
+                        return false;
+                    }
+                }));
     }
 
     private static Optional<LevelAccessor> pickLevelAccessor(BreakContext context) {
