@@ -23,7 +23,7 @@ public class BreakTracker {
     }
 
     private static UUID getKeyForPlayer(Player player) {
-        return player.getGameProfile().getId();
+        return player.getGameProfile().id();
     }
 
     public static BreakContext getOrCreateContext(BlockGetter blockGetter, BlockPos pos, BlockState state, Player player, Consumer<BreakContext> initializer) {
