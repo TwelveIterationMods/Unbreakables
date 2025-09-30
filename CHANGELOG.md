@@ -1,1 +1,1 @@
-- Added `is_player` condition to check against fake players
+- Added `has_advancement` condition to check if a player has an advancement unlocked
