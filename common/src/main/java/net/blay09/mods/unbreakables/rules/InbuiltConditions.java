@@ -171,7 +171,7 @@ public class InbuiltConditions {
                 IdParameter.class,
                 (context, parameters) -> context.viaServer((serverLevel) -> {
                     final var player = ((ServerPlayer) context.getPlayer());
-                    final var advancement = player.getServer().getAdvancements().getAdvancement(parameters.value());
+                    final var advancement = player.getServer().getAdvancements().get(parameters.value());
                     if (advancement != null) {
                         return player.getAdvancements().getOrStartProgress(advancement).isDone();
                     } else {
