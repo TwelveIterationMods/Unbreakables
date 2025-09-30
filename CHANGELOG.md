@@ -1,1 +1,1 @@
-- Updated to Minecraft 1.21.8
+- Added `has_advancement` condition to check if a player has an advancement unlocked
