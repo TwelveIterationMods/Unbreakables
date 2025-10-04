@@ -1,1 +1,1 @@
-- Updated to Minecraft 1.21.9
+- Fixed `is_near` and `is_near_poi` conditions not working
