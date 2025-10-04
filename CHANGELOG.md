@@ -1,1 +1,1 @@
-- Added `has_advancement` condition to check if a player has an advancement unlocked
+- Fixed `is_near` and `is_near_poi` conditions not working
