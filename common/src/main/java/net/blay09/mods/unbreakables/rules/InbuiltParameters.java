@@ -28,6 +28,8 @@ public class InbuiltParameters {
         RuleRegistry.registerDefaultSerializer(IntCountedIdParameter.class);
         RuleRegistry.registerDefaultSerializer(EntityNearbyParameter.class);
         RuleRegistry.registerDefaultSerializer(PositionParameter.class);
+        RuleRegistry.registerDefaultSerializer(IsNearParameter.class);
+        RuleRegistry.registerDefaultSerializer(IsNearPoiParameter.class);
         RuleRegistry.registerDefaultSerializer(BoundsParameter.class);
     }
 }
