@@ -12,22 +12,18 @@ import java.util.function.Consumer;
 
 public class BreakTracker {
 
-    private static final Map<UUID, BreakContext> contexts = Collections.synchronizedMap(new HashMap<>());
+    private static final Map<Player, BreakContext> contexts = Collections.synchronizedMap(new WeakHashMap<>());
 
     public static void startBreak(Player player) {
-        contexts.remove(getKeyForPlayer(player));
+        contexts.remove(player);
     }
 
     public static void stopBreak(Player player) {
-        contexts.remove(getKeyForPlayer(player));
-    }
-
-    private static UUID getKeyForPlayer(Player player) {
-        return player.getGameProfile().id();
+        contexts.remove(player);
     }
 
     public static BreakContext getOrCreateContext(BlockGetter blockGetter, BlockPos pos, BlockState state, Player player, Consumer<BreakContext> initializer) {
-        return contexts.computeIfAbsent(getKeyForPlayer(player), (key) -> {
+        return contexts.computeIfAbsent(player, (key) -> {
             final var breakContext = new BreakContextImpl(blockGetter, pos, state, player);
             initializer.accept(breakContext);
             return breakContext;
@@ -39,12 +35,11 @@ public class BreakTracker {
     }
 
     public static Optional<BreakContext> getContext(Player player, @Nullable BlockPos pos) {
-        final var cacheKey = getKeyForPlayer(player);
-        final var breakContext = contexts.get(cacheKey);
+        final var breakContext = contexts.get(player);
         if (breakContext != null && (pos == null || breakContext.getPos().equals(pos))) {
             return Optional.of(breakContext);
         }
-        contexts.remove(cacheKey);
+        contexts.remove(player);
         return Optional.empty();
     }
 }
