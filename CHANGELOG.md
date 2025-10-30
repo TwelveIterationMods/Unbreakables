@@ -1,1 +1,1 @@
-- Fixed `is_near` and `is_near_poi` conditions not working
+- Fixed memory leak keeping unloaded players in memory
