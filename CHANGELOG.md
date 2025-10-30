@@ -1,1 +1,1 @@
-- Updated to Minecraft 1.21.10
+- Fixed memory leak keeping unloaded players in memory
