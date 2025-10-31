@@ -1,1 +1,2 @@
-- Fixed memory leak keeping unloaded players in memory
+- Fixed memory leak keeping unloaded players in memory, but properly this time
+  - Thanks to pietro-lopes (AllTheLeaks) for pointing it out
