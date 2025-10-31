@@ -2,13 +2,12 @@ package net.blay09.mods.unbreakables.api;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface BreakContext {
@@ -16,6 +15,7 @@ public interface BreakContext {
 
     float getContextValue(ResourceLocation id);
 
+    @Nullable
     Player getPlayer();
 
     BlockGetter getBlockGetter();

@@ -5,12 +5,12 @@ import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.blay09.mods.unbreakables.api.ConfiguredCondition;
 import net.blay09.mods.unbreakables.network.ClientboundUnbreakableStatusPacket;
+import net.blay09.mods.unbreakables.rules.ConfiguredRule;
+import net.blay09.mods.unbreakables.rules.RuleRegistry;
 import net.blay09.mods.unbreakables.rules.hint.NoHint;
 import net.blay09.mods.unbreakables.rules.requirements.ClientsideAssumedRequirement;
 import net.blay09.mods.unbreakables.rules.requirements.CombinedRequirement;
-import net.blay09.mods.unbreakables.rules.ConfiguredRule;
 import net.blay09.mods.unbreakables.rules.requirements.NoRequirement;
-import net.blay09.mods.unbreakables.rules.RuleRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -29,7 +30,7 @@ public class BreakContextImpl implements BreakContext {
     private final BlockGetter blockGetter;
     private final BlockPos pos;
     private final BlockState state;
-    private final Player player;
+    private final WeakReference<Player> player;
 
     private boolean hasServersideConditions;
     private BreakRequirement resolvedRequirement;
@@ -38,7 +39,7 @@ public class BreakContextImpl implements BreakContext {
         this.blockGetter = blockGetter;
         this.pos = pos;
         this.state = state;
-        this.player = player;
+        this.player = new WeakReference<>(player);
     }
 
     @SuppressWarnings("unchecked")
@@ -87,9 +88,12 @@ public class BreakContextImpl implements BreakContext {
         }
         resolvedRequirement = result;
 
-        boolean breakable = resolvedRequirement.canAfford(this, player);
-        if (hasServersideConditions && player instanceof ServerPlayer) {
-            Balm.getNetworking().sendTo(player, new ClientboundUnbreakableStatusPacket(pos, result.hint(this, player).orElse(NoHint.INSTANCE), breakable));
+        final var player = this.player.get();
+        if (player != null) {
+            boolean breakable = resolvedRequirement.canAfford(this, player);
+            if (hasServersideConditions && player instanceof ServerPlayer) {
+                Balm.getNetworking().sendTo(player, new ClientboundUnbreakableStatusPacket(pos, result.hint(this, player).orElse(NoHint.INSTANCE), breakable));
+            }
         }
 
         return result;
@@ -128,6 +132,6 @@ public class BreakContextImpl implements BreakContext {
 
     @Override
     public Player getPlayer() {
-        return player;
+        return player.get();
     }
 }
