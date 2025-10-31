@@ -2,7 +2,10 @@ package net.blay09.mods.unbreakables.rules;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.unbreakables.api.BreakContext;
-import net.blay09.mods.unbreakables.api.parameter.*;
+import net.blay09.mods.unbreakables.api.parameter.FloatParameter;
+import net.blay09.mods.unbreakables.api.parameter.IdParameter;
+import net.blay09.mods.unbreakables.api.parameter.PositionParameter;
+import net.blay09.mods.unbreakables.api.parameter.TaggableIdParameter;
 import net.blay09.mods.unbreakables.rules.parameters.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -61,25 +64,38 @@ public class InbuiltConditions {
 
         RuleRegistry.registerConditionResolver("has_effect",
                 FloatCountedIdParameter.class,
-                (context, parameters) -> BuiltInRegistries.MOB_EFFECT.getHolder(parameters.id().value())
-                        .map(it -> context.getPlayer().getEffect(it))
-                        .map(MobEffectInstance::getAmplifier)
-                        .map(it -> it >= parameters.count().value() - 1)
-                        .orElse(false));
+                (context, parameters) -> {
+                    final var player = context.getPlayer();
+                    return player != null && BuiltInRegistries.MOB_EFFECT.getHolder(parameters.id().value())
+                            .map(player::getEffect)
+                            .map(MobEffectInstance::getAmplifier)
+                            .map(it -> it >= parameters.count().value() - 1)
+                            .orElse(false);
+                });
 
         RuleRegistry.registerConditionResolver("is_tool",
                 TaggableIdParameter.class,
-                (context, parameters) -> parameters.isTag() ? context.getPlayer()
-                        .getMainHandItem()
-                        .is(TagKey.create(Registries.ITEM, parameters.value())) : context.getPlayer()
-                        .getMainHandItem()
-                        .is(BuiltInRegistries.ITEM.get(parameters.value())));
+                (context, parameters) -> {
+                    final var player = context.getPlayer();
+                    if (player == null) {
+                        return false;
+                    }
+
+                    return parameters.isTag()
+                            ? player.getMainHandItem().is(TagKey.create(Registries.ITEM, parameters.value()))
+                            : player.getMainHandItem().is(BuiltInRegistries.ITEM.get(parameters.value()));
+                });
 
         RuleRegistry.registerConditionResolver("is_enchanted",
                 FloatCountedIdParameter.class,
                 (context, parameters) -> {
-                    final var item = context.getPlayer().getMainHandItem();
-                    return context.getPlayer().registryAccess().registry(Registries.ENCHANTMENT)
+                    final var player = context.getPlayer();
+                    if (player == null) {
+                        return false;
+                    }
+
+                    final var item = player.getMainHandItem();
+                    return player.registryAccess().registry(Registries.ENCHANTMENT)
                             .flatMap(it -> it.getHolder(parameters.id().value()))
                             .map(it -> EnchantmentHelper.getItemEnchantmentLevel(it, item))
                             .map(it -> it >= parameters.count().value())
@@ -165,18 +181,21 @@ public class InbuiltConditions {
 
         RuleRegistry.registerConditionResolver("is_player",
                 IsNearParameter.class,
-                (context, parameters) -> !Balm.getHooks().isFakePlayer(context.getPlayer()));
+                (context, parameters) -> {
+                    final var player = context.getPlayer();
+                    return player != null && !Balm.getHooks().isFakePlayer(player);
+                });
 
         RuleRegistry.registerConditionResolver("has_advancement",
                 IdParameter.class,
                 (context, parameters) -> context.viaServer((serverLevel) -> {
-                    final var player = ((ServerPlayer) context.getPlayer());
-                    final var advancement = player.getServer().getAdvancements().get(parameters.value());
-                    if (advancement != null) {
-                        return player.getAdvancements().getOrStartProgress(advancement).isDone();
-                    } else {
-                        return false;
+                    if (context.getPlayer() instanceof ServerPlayer serverPlayer) {
+                        final var advancement = serverPlayer.level().getServer().getAdvancements().get(parameters.value());
+                        if (advancement != null) {
+                            return serverPlayer.getAdvancements().getOrStartProgress(advancement).isDone();
+                        }
                     }
+                    return false;
                 }));
     }
 
