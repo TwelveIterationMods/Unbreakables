@@ -3,7 +3,7 @@ package net.blay09.mods.unbreakables.rules;
 import net.blay09.mods.unbreakables.api.parameter.*;
 import net.blay09.mods.unbreakables.rules.parameters.*;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class InbuiltParameters {
     public static void register() {
@@ -11,11 +11,11 @@ public class InbuiltParameters {
         RuleRegistry.registerSerializer(IntParameter.class, it -> new IntParameter(Integer.parseInt(it)));
         RuleRegistry.registerSerializer(FloatParameter.class, it -> new FloatParameter(Float.parseFloat(it)));
         RuleRegistry.registerSerializer(StringParameter.class, StringParameter::new);
-        RuleRegistry.registerSerializer(IdParameter.class, it -> new IdParameter(ResourceLocation.tryParse(it)));
+        RuleRegistry.registerSerializer(IdParameter.class, it -> new IdParameter(Identifier.tryParse(it)));
         RuleRegistry.registerSerializer(TaggableIdParameter.class,
-                it -> it.startsWith("#") ? new TaggableIdParameter(ResourceLocation.tryParse(it.substring(1)),
-                        true) : new TaggableIdParameter(ResourceLocation.tryParse(it), false));
-        RuleRegistry.registerSerializer(UnbreakablesIdParameter.class, it -> new UnbreakablesIdParameter(RuleParser.unbreakablesResourceLocation(it)));
+                it -> it.startsWith("#") ? new TaggableIdParameter(Identifier.tryParse(it.substring(1)),
+                        true) : new TaggableIdParameter(Identifier.tryParse(it), false));
+        RuleRegistry.registerSerializer(UnbreakablesIdParameter.class, it -> new UnbreakablesIdParameter(RuleParser.unbreakablesIdentifier(it)));
         RuleRegistry.registerSerializer(ComponentParameter.class,
                 it -> new ComponentParameter(it.startsWith("$") ? Component.translatable(it.substring(1)) : Component.literal(it)));
         RuleRegistry.registerDefaultSerializer(VariableScaledParameter.class);

@@ -3,14 +3,14 @@ package net.blay09.mods.unbreakables.rules.hint;
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.api.BreakHint;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public record ExperienceLevelHint(int levels) implements BreakHint<ExperienceLevelHint> {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, "xp_level");
+    public static final Identifier ID = Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, "xp_level");
 
     @Override
-    public ResourceLocation id() {
+    public Identifier id() {
         return ID;
     }
 

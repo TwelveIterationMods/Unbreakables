@@ -1,8 +1,8 @@
 package net.blay09.mods.unbreakables.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface VariableResolver {
-    ResourceLocation getId();
+    Identifier getId();
     float resolve(BreakContext context);
 }

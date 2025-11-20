@@ -2,7 +2,7 @@ package net.blay09.mods.unbreakables.rules;
 
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.api.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -11,17 +11,17 @@ import java.util.function.Supplier;
 
 public class RuleRegistry {
 
-    private static final Map<ResourceLocation, RequirementType<?>> requirementTypes = new HashMap<>();
-    private static final Map<ResourceLocation, RequirementFunction<?, ?>> requirementFunctions = new HashMap<>();
+    private static final Map<Identifier, RequirementType<?>> requirementTypes = new HashMap<>();
+    private static final Map<Identifier, RequirementFunction<?, ?>> requirementFunctions = new HashMap<>();
     private static final Map<Class<?>, ParameterSerializer<?>> parameterSerializers = new HashMap<>();
-    private static final Map<ResourceLocation, VariableResolver> variableResolvers = new HashMap<>();
-    private static final Map<ResourceLocation, ConditionResolver<?>> conditionResolvers = new HashMap<>();
+    private static final Map<Identifier, VariableResolver> variableResolvers = new HashMap<>();
+    private static final Map<Identifier, ConditionResolver<?>> conditionResolvers = new HashMap<>();
 
     public static <T extends BreakRequirement> RequirementType<T> createDefaultType(String name, Class<T> requirementClass) {
         final var requirementType = new RequirementType<T>() {
             @Override
-            public ResourceLocation getId() {
-                return ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
+            public Identifier getId() {
+                return Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
             }
 
             @Override
@@ -60,8 +60,8 @@ public class RuleRegistry {
     public static void registerVariableResolver(String name, Function<BreakContext, Float> resolver) {
         register(new VariableResolver() {
             @Override
-            public ResourceLocation getId() {
-                return ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
+            public Identifier getId() {
+                return Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
             }
 
             @Override
@@ -74,8 +74,8 @@ public class RuleRegistry {
     public static <P> void registerConditionResolver(String name, Class<P> parameterType, BiFunction<BreakContext, P, Boolean> resolver) {
         register(new ConditionResolver<P>() {
             @Override
-            public ResourceLocation getId() {
-                return ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
+            public Identifier getId() {
+                return Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
             }
 
             @Override
@@ -93,8 +93,8 @@ public class RuleRegistry {
         final var notName = index != -1 ? name.substring(0, index + 3) + "not_" + name.substring(index + 3) : "not_" + name;
         register(new ConditionResolver<P>() {
             @Override
-            public ResourceLocation getId() {
-                return ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, notName);
+            public Identifier getId() {
+                return Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, notName);
             }
 
             @Override
@@ -130,12 +130,12 @@ public class RuleRegistry {
     public static <T extends BreakRequirement, P> void registerModifier(String name, RequirementType<T> requirementType, Class<P> parameterType, BreakModifierFunction<T, P> function, Supplier<Boolean> predicate) {
         register(new RequirementFunction<T, P>() {
             @Override
-            public ResourceLocation getId() {
-                return ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
+            public Identifier getId() {
+                return Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, name);
             }
 
             @Override
-            public ResourceLocation getRequirementType() {
+            public Identifier getRequirementType() {
                 return requirementType.getId();
             }
 
@@ -157,20 +157,20 @@ public class RuleRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends BreakRequirement> RequirementType<T> getRequirementType(ResourceLocation id) {
+    public static <T extends BreakRequirement> RequirementType<T> getRequirementType(Identifier id) {
         return (RequirementType<T>) requirementTypes.get(id);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends BreakRequirement, P> RequirementFunction<T, P> getRequirementFunction(ResourceLocation id) {
+    public static <T extends BreakRequirement, P> RequirementFunction<T, P> getRequirementFunction(Identifier id) {
         return (RequirementFunction<T, P>) requirementFunctions.get(id);
     }
 
-    public static VariableResolver getVariableResolver(ResourceLocation id) {
+    public static VariableResolver getVariableResolver(Identifier id) {
         return variableResolvers.get(id);
     }
 
-    public static ConditionResolver<?> getConditionResolver(ResourceLocation id) {
+    public static ConditionResolver<?> getConditionResolver(Identifier id) {
         return conditionResolvers.get(id);
     }
 

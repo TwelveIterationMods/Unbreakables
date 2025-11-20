@@ -5,17 +5,17 @@ import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.blay09.mods.unbreakables.api.BreakHint;
 import net.blay09.mods.unbreakables.rules.hint.CooldownHint;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
 
 public class CooldownRequirement implements BreakRequirement {
 
-    private ResourceLocation id;
+    private Identifier id;
     private int seconds;
 
-    public CooldownRequirement(ResourceLocation id, int seconds) {
+    public CooldownRequirement(Identifier id, int seconds) {
         this.id = id;
         this.seconds = seconds;
     }
@@ -52,12 +52,12 @@ public class CooldownRequirement implements BreakRequirement {
         return seconds <= 0;
     }
 
-    public void setCooldown(ResourceLocation key, int seconds) {
+    public void setCooldown(Identifier key, int seconds) {
         this.id = key;
         this.seconds = seconds;
     }
 
-    public ResourceLocation getCooldownId() {
+    public Identifier getCooldownId() {
         return id;
     }
 

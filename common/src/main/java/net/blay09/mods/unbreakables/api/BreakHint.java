@@ -1,11 +1,11 @@
 package net.blay09.mods.unbreakables.api;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface BreakHint<T extends BreakHint<T>> {
 
-    ResourceLocation id();
+    Identifier id();
 
     Serializer<T> serializer();
 

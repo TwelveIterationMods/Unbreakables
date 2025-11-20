@@ -1,6 +1,6 @@
 package net.blay09.mods.unbreakables;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.BreakRequirement;
 import net.blay09.mods.unbreakables.api.ConfiguredCondition;
@@ -12,7 +12,7 @@ import net.blay09.mods.unbreakables.rules.requirements.ClientsideAssumedRequirem
 import net.blay09.mods.unbreakables.rules.requirements.CombinedRequirement;
 import net.blay09.mods.unbreakables.rules.requirements.NoRequirement;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -26,7 +26,7 @@ import java.util.function.Function;
 
 public class BreakContextImpl implements BreakContext {
 
-    private final Map<ResourceLocation, BreakRequirement> requirements = new HashMap<>();
+    private final Map<Identifier, BreakRequirement> requirements = new HashMap<>();
     private final BlockGetter blockGetter;
     private final BlockPos pos;
     private final BlockState state;
@@ -60,7 +60,7 @@ public class BreakContextImpl implements BreakContext {
         requirements.put(modifier.getRequirementType(), modifier.apply(existing, this, parameters));
     }
 
-    public float getContextValue(ResourceLocation id) {
+    public float getContextValue(Identifier id) {
         final var resolver = RuleRegistry.getVariableResolver(id);
         if (resolver != null) {
             return resolver.resolve(this);
@@ -92,7 +92,7 @@ public class BreakContextImpl implements BreakContext {
         if (player != null) {
             boolean breakable = resolvedRequirement.canAfford(this, player);
             if (hasServersideConditions && player instanceof ServerPlayer) {
-                Balm.getNetworking().sendTo(player, new ClientboundUnbreakableStatusPacket(pos, result.hint(this, player).orElse(NoHint.INSTANCE), breakable));
+                Balm.networking().sendTo(player, new ClientboundUnbreakableStatusPacket(pos, result.hint(this, player).orElse(NoHint.INSTANCE), breakable));
             }
         }
 

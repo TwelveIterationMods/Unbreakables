@@ -1,6 +1,6 @@
 package net.blay09.mods.unbreakables.rules;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.unbreakables.api.BreakContext;
 import net.blay09.mods.unbreakables.api.parameter.FloatParameter;
 import net.blay09.mods.unbreakables.api.parameter.IdParameter;
@@ -55,7 +55,7 @@ public class InbuiltConditions {
 
         RuleRegistry.registerConditionResolver("is_in_dimension",
                 IdParameter.class,
-                (context, parameters) -> pickLevel(context).map(it -> it.dimension().location().equals(parameters.value())).orElse(false));
+                (context, parameters) -> pickLevel(context).map(it -> it.dimension().identifier().equals(parameters.value())).orElse(false));
 
         RuleRegistry.registerConditionResolver("is_in_biome",
                 TaggableIdParameter.class,
@@ -183,7 +183,7 @@ public class InbuiltConditions {
                 IsNearParameter.class,
                 (context, parameters) -> {
                     final var player = context.getPlayer();
-                    return player != null && !Balm.getHooks().isFakePlayer(player);
+                    return player != null && !Balm.hooks().isFakePlayer(player);
                 });
 
         RuleRegistry.registerConditionResolver("has_advancement",

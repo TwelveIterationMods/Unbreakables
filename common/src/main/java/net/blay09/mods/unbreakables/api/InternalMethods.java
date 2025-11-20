@@ -1,6 +1,6 @@
 package net.blay09.mods.unbreakables.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -15,5 +15,5 @@ public interface InternalMethods {
 
     <T extends BreakRequirement, P> void registerModifier(String name, RequirementType<T> requirementType, Class<P> parameterType, BreakModifierFunction<T,P> function, Supplier<Boolean> predicate);
 
-    <T> void registerHintSerializer(ResourceLocation id, BreakHint.Serializer<T> serializer);
+    <T> void registerHintSerializer(Identifier id, BreakHint.Serializer<T> serializer);
 }

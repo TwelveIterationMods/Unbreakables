@@ -6,7 +6,7 @@ import net.blay09.mods.unbreakables.api.ConditionResolver;
 import net.blay09.mods.unbreakables.api.ConfiguredCondition;
 import net.blay09.mods.unbreakables.api.RequirementFunction;
 import net.blay09.mods.unbreakables.rules.requirements.ConfiguredRequirement;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class RuleParser {
         final var conditionMatcher = conditionPattern.matcher(conditionsPart);
 
         while (conditionMatcher.find()) {
-            final var conditionId = unbreakablesResourceLocation(conditionMatcher.group(1));
+            final var conditionId = unbreakablesIdentifier(conditionMatcher.group(1));
             final var args = conditionMatcher.group(2);
             final var conditionResolver = RuleRegistry.getConditionResolver(conditionId);
             if (conditionResolver != null) {
@@ -59,7 +59,7 @@ public class RuleParser {
         final var functionMatcher = functionPattern.matcher(functionPart);
 
         if (functionMatcher.find()) {
-            final var requirementId = unbreakablesResourceLocation(functionMatcher.group(1));
+            final var requirementId = unbreakablesIdentifier(functionMatcher.group(1));
             final var args = functionMatcher.group(2);
             final var requirement = RuleRegistry.getRequirementFunction(requirementId);
             if (requirement != null) {
@@ -77,11 +77,11 @@ public class RuleParser {
         return new ConfiguredRequirement<>(requirement, parameters);
     }
 
-    public static ResourceLocation unbreakablesResourceLocation(String value) {
+    public static Identifier unbreakablesIdentifier(String value) {
         final var colon = value.indexOf(':');
         final var namespace = colon != -1 ? value.substring(0, colon) : Unbreakables.MOD_ID;
         final var path = colon != -1 ? value.substring(colon + 1) : value;
-        return ResourceLocation.fromNamespaceAndPath(namespace, path);
+        return Identifier.fromNamespaceAndPath(namespace, path);
     }
 
     public static <T> T deserializeParameter(Class<T> type, String value) {

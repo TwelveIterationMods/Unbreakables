@@ -8,11 +8,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class CooldownHintRenderer implements BreakHintRenderer<CooldownHint> {
 
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, "textures/gui/icons.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, "textures/gui/icons.png");
 
     @Override
     public void render(Window window, GuiGraphics guiGraphics, float partialTicks, CooldownHint hint) {

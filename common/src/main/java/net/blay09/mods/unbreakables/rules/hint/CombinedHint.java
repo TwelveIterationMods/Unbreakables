@@ -3,17 +3,17 @@ package net.blay09.mods.unbreakables.rules.hint;
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.api.BreakHint;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public record CombinedHint(List<? extends BreakHint<?>> hints) implements BreakHint<CombinedHint> {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, "multiple");
+    public static final Identifier ID = Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, "multiple");
 
     @Override
-    public ResourceLocation id() {
+    public Identifier id() {
         return ID;
     }
 
@@ -31,7 +31,7 @@ public record CombinedHint(List<? extends BreakHint<?>> hints) implements BreakH
         public void encode(RegistryFriendlyByteBuf buf, CombinedHint hint) {
             buf.writeVarInt(hint.hints().size());
             for (final var child : hint.hints()) {
-                buf.writeResourceLocation(child.id());
+                buf.writeIdentifier(child.id());
                 @SuppressWarnings("rawtypes") final var serializer = (Serializer) child.serializer();
                 serializer.encode(buf, child);
             }
@@ -42,7 +42,7 @@ public record CombinedHint(List<? extends BreakHint<?>> hints) implements BreakH
             final var size = buf.readVarInt();
             final List<BreakHint<?>> hints = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
-                final var id = buf.readResourceLocation();
+                final var id = buf.readIdentifier();
                 final var serializer = BreakHintRegistry.getSerializer(id);
                 final var hint = serializer.decode(buf);
                 hints.add(hint);

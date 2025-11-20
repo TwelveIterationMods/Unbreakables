@@ -1,9 +1,9 @@
 package net.blay09.mods.unbreakables;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.config.reflection.Comment;
-import net.blay09.mods.balm.api.config.reflection.Config;
-import net.blay09.mods.balm.api.config.reflection.NestedType;
+import net.blay09.mods.balm.Balm;
+import net.blay09.mods.balm.platform.config.reflection.Comment;
+import net.blay09.mods.balm.platform.config.reflection.Config;
+import net.blay09.mods.balm.platform.config.reflection.NestedType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +19,10 @@ public class UnbreakablesConfig {
     public List<String> rules = new ArrayList<>();
 
     public static UnbreakablesConfig getActive() {
-        return Balm.getConfig().getActiveConfig(UnbreakablesConfig.class);
+        return Balm.config().getActiveConfig(UnbreakablesConfig.class);
     }
 
     public static void initialize() {
-        Balm.getConfig().registerConfig(UnbreakablesConfig.class);
+        Balm.config().registerConfig(UnbreakablesConfig.class);
     }
 }

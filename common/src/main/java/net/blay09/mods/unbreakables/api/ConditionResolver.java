@@ -1,9 +1,9 @@
 package net.blay09.mods.unbreakables.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface ConditionResolver<P> {
-    ResourceLocation getId();
+    Identifier getId();
 
     Class<P> getParameterType();
 

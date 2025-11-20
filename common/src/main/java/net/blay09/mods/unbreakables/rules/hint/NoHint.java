@@ -3,15 +3,15 @@ package net.blay09.mods.unbreakables.rules.hint;
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.api.BreakHint;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class NoHint implements BreakHint<NoHint> {
 
     public static final NoHint INSTANCE = new NoHint();
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, "none");
+    public static final Identifier ID = Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, "none");
 
     @Override
-    public ResourceLocation id() {
+    public Identifier id() {
         return ID;
     }
 

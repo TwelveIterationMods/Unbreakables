@@ -6,7 +6,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public record UnbreakableRulesMessage(List<String> rules) implements CustomPacketPayload {
 
-    public static Type<UnbreakableRulesMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, "unbreakable_rules"));
+    public static Type<UnbreakableRulesMessage> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, "unbreakable_rules"));
     public static StreamCodec<RegistryFriendlyByteBuf, UnbreakableRulesMessage> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.collection(ArrayList::new, ByteBufCodecs.STRING_UTF8),
             UnbreakableRulesMessage::rules,

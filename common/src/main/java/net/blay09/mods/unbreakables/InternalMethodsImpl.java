@@ -3,7 +3,7 @@ package net.blay09.mods.unbreakables;
 import net.blay09.mods.unbreakables.api.*;
 import net.blay09.mods.unbreakables.rules.RuleRegistry;
 import net.blay09.mods.unbreakables.rules.hint.BreakHintRegistry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -31,7 +31,7 @@ public class InternalMethodsImpl implements InternalMethods {
     }
 
     @Override
-    public <T> void registerHintSerializer(ResourceLocation id, BreakHint.Serializer<T> serializer) {
+    public <T> void registerHintSerializer(Identifier id, BreakHint.Serializer<T> serializer) {
         BreakHintRegistry.register(id, serializer);
     }
 }

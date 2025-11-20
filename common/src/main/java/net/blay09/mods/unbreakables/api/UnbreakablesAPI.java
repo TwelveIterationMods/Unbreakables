@@ -1,6 +1,6 @@
 package net.blay09.mods.unbreakables.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.BiFunction;
@@ -35,7 +35,7 @@ public class UnbreakablesAPI {
         internalMethods.registerModifier(name, requirementType, parameterType, function, predicate);
     }
 
-    public static <T> void registerHintSerializer(ResourceLocation id, BreakHint.Serializer<T> serializer) {
+    public static <T> void registerHintSerializer(Identifier id, BreakHint.Serializer<T> serializer) {
         internalMethods.registerHintSerializer(id, serializer);
     }
 }

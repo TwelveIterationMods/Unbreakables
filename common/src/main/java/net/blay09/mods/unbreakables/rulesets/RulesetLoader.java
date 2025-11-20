@@ -1,7 +1,7 @@
 package net.blay09.mods.unbreakables.rulesets;
 
 import com.google.gson.Gson;
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.UnbreakablesConfig;
 import net.blay09.mods.unbreakables.network.UnbreakableRulesMessage;
@@ -51,9 +51,9 @@ public class RulesetLoader implements ResourceManagerReloadListener {
 
         Unbreakables.logger.info("{} breakable rules loaded", loadedRules.size());
 
-        final var server = Balm.getHooks().getServer();
+        final var server = Balm.platform().server();
         if (server != null) {
-            Balm.getNetworking().sendToAll(server, new UnbreakableRulesMessage(RulesetLoader.getRules()));
+            Balm.networking().sendToAll(server, new UnbreakableRulesMessage(RulesetLoader.getRules()));
         }
     }
 

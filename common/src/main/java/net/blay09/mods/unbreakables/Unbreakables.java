@@ -1,11 +1,12 @@
 package net.blay09.mods.unbreakables;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.event.BreakBlockEvent;
-import net.blay09.mods.balm.api.event.EventPriority;
-import net.blay09.mods.balm.api.event.PlayerLoginEvent;
+import net.blay09.mods.balm.Balm;
+import net.blay09.mods.balm.core.BalmRegistrars;
+import net.blay09.mods.balm.platform.event.EventHandling;
+import net.blay09.mods.balm.platform.event.EventPhases;
+import net.blay09.mods.balm.platform.event.callback.BlockCallback;
+import net.blay09.mods.balm.platform.event.callback.ServerPlayerCallback;
 import net.blay09.mods.unbreakables.api.UnbreakablesAPI;
-import net.blay09.mods.unbreakables.event.NewDigSpeedEvent;
 import net.blay09.mods.unbreakables.network.ModNetworking;
 import net.blay09.mods.unbreakables.network.UnbreakableRulesMessage;
 import net.blay09.mods.unbreakables.rules.InbuiltConditions;
@@ -13,7 +14,6 @@ import net.blay09.mods.unbreakables.rules.InbuiltParameters;
 import net.blay09.mods.unbreakables.rules.InbuiltRequirements;
 import net.blay09.mods.unbreakables.rules.hint.*;
 import net.blay09.mods.unbreakables.rulesets.RulesetLoader;
-import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ public class Unbreakables {
 
     public static final String MOD_ID = "unbreakables";
 
-    public static void initialize() {
+    public static void initialize(BalmRegistrars registrars) {
         InbuiltParameters.register();
         InbuiltConditions.register();
         InbuiltRequirements.register();
@@ -38,57 +38,54 @@ public class Unbreakables {
 
         UnbreakablesConfig.initialize();
 
-        ModNetworking.initialize(Balm.getNetworking());
+        ModNetworking.initialize(Balm.networking());
 
-        Balm.addServerReloadListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "json_rulesets"), new RulesetLoader());
+        registrars.resourceReloadListeners(registrar
+                -> registrar.register("json_rulesets", new RulesetLoader()));
 
         // Sync rules to clients so they can properly predict if a block can be broken
-        Balm.getEvents()
-                .onEvent(PlayerLoginEvent.class,
-                        event -> Balm.getNetworking().sendTo(event.getPlayer(), new UnbreakableRulesMessage(RulesetLoader.getRules())));
+        ServerPlayerCallback.Login.EVENT.register(player -> Balm.networking().sendTo(player, new UnbreakableRulesMessage(RulesetLoader.getRules())));
 
         // Disable dig speed for breakable blocks
-        Balm.getEvents().onEvent(NewDigSpeedEvent.class, (event) -> {
-            final var breakContext = BreakTracker.getOrCreateContext(event.getBlockGetter(),
-                    event.getPos(),
-                    event.getState(),
-                    event.getPlayer(),
+        BlockCallback.DigSpeed.EVENT.register((blockGetter, pos, state, player, speed) -> {
+            final var breakContext = BreakTracker.getOrCreateContext(blockGetter, pos, state, player,
                     (context) -> RulesetLoader.getLoadedRules().forEach(it -> ((BreakContextImpl) context).apply(it)));
             final var requirement = breakContext.resolve();
-            if (!requirement.canAfford(breakContext, event.getPlayer())) {
-                event.setSpeedOverride(0f);
-            }
+            return !requirement.canAfford(breakContext, player) ? 0f : speed;
         });
 
         // In case the break somehow goes through the dig speed, run as early as possible to cancel the block break
-        Balm.getEvents().onEvent(BreakBlockEvent.class, (event) -> {
-            if (event.getPlayer().getAbilities().instabuild) {
-                return;
+        BlockCallback.Break.EVENT.register(EventPhases.HIGHEST, (level, pos, state, blockEntity, player) -> {
+            if (player.getAbilities().instabuild) {
+                return EventHandling.RESUME;
             }
 
-            final var breakContext = new BreakContextImpl(event.getLevel(), event.getPos(), event.getState(), event.getPlayer());
+            final var breakContext = new BreakContextImpl(level, pos, state, player);
             RulesetLoader.getLoadedRules().forEach(breakContext::apply);
             final var requirement = breakContext.resolve();
-            if (!requirement.canAfford(breakContext, event.getPlayer())) {
-                event.setCanceled(true);
+            if (!requirement.canAfford(breakContext, player)) {
+                return EventHandling.CANCEL;
             }
-        }, EventPriority.Highest);
+            return EventHandling.RESUME;
+        });
 
         // If the block break is not cancelled, consume requirements
-        Balm.getEvents().onEvent(BreakBlockEvent.class, (event) -> {
-            if (event.getPlayer().getAbilities().instabuild) {
-                return;
+        BlockCallback.Break.EVENT.register(EventPhases.LOWEST, (level, pos, state, blockEntity, player) -> {
+            if (player.getAbilities().instabuild) {
+                return EventHandling.RESUME;
             }
 
-            final var breakContext = new BreakContextImpl(event.getLevel(), event.getPos(), event.getState(), event.getPlayer());
+            final var breakContext = new BreakContextImpl(level, pos, state, player);
             RulesetLoader.getLoadedRules().forEach(breakContext::apply);
             final var requirement = breakContext.resolve();
-            if (!requirement.canAfford(breakContext, event.getPlayer())) {
-                event.setCanceled(true);
+            if (!requirement.canAfford(breakContext, player)) {
+                return EventHandling.CANCEL;
             } else {
-                requirement.consume(event.getPlayer());
+                requirement.consume(player);
             }
-        }, EventPriority.Lowest);
+
+            return EventHandling.RESUME;
+        });
     }
 
 }

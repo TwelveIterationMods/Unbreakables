@@ -2,14 +2,14 @@ package net.blay09.mods.unbreakables.rules.requirements;
 
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.api.RequirementType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class CooldownRequirementType implements RequirementType<CooldownRequirement> {
 
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, "cooldown");
+    public static final Identifier ID = Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, "cooldown");
 
     @Override
-    public ResourceLocation getId() {
+    public Identifier getId() {
         return ID;
     }
 

@@ -1,7 +1,7 @@
 package net.blay09.mods.unbreakables.api.client;
 
 import net.blay09.mods.unbreakables.api.BreakHint;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -17,7 +17,7 @@ public class UnbreakablesClientAPI {
         }
     }
 
-    public static <T extends BreakHint<T>> void registerHintRenderer(ResourceLocation id, BreakHintRenderer<T> renderer) {
+    public static <T extends BreakHint<T>> void registerHintRenderer(Identifier id, BreakHintRenderer<T> renderer) {
         internalMethods.registerHintRenderer(id, renderer);
     }
 }

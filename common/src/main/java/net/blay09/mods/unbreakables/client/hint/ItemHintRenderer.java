@@ -3,19 +3,17 @@ package net.blay09.mods.unbreakables.client.hint;
 import com.mojang.blaze3d.platform.Window;
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.api.client.BreakHintRenderer;
-import net.blay09.mods.unbreakables.rules.hint.ExperiencePointsHint;
 import net.blay09.mods.unbreakables.rules.hint.ItemHint;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ItemHintRenderer implements BreakHintRenderer<ItemHint> {
 
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Unbreakables.MOD_ID, "textures/gui/icons.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, "textures/gui/icons.png");
 
     @Override
     public void render(Window window, GuiGraphics guiGraphics, float partialTicks, ItemHint hint) {
