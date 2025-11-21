@@ -1,5 +1,6 @@
 package net.blay09.mods.unbreakables.client;
 
+import net.blay09.mods.balm.client.BalmClientRegistrars;
 import net.blay09.mods.balm.client.platform.event.callback.RenderCallback;
 import net.blay09.mods.unbreakables.BreakTracker;
 import net.blay09.mods.unbreakables.api.client.BreakHintRenderer;
@@ -11,7 +12,7 @@ import net.minecraft.client.Minecraft;
 
 public class UnbreakablesClient {
     @SuppressWarnings("unchecked")
-    public static void initialize() {
+    public static void initialize(BalmClientRegistrars registrars) {
         UnbreakablesClientAPI.registerHintRenderer(MessageHint.ID, new MessageHintRenderer());
         UnbreakablesClientAPI.registerHintRenderer(CooldownHint.ID, new CooldownHintRenderer());
         UnbreakablesClientAPI.registerHintRenderer(ExperiencePointsHint.ID, new ExperiencePointsHintRenderer());
