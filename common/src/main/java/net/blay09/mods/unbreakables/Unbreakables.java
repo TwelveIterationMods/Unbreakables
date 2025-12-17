@@ -4,6 +4,7 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.BreakBlockEvent;
 import net.blay09.mods.balm.api.event.EventPriority;
 import net.blay09.mods.balm.api.event.PlayerLoginEvent;
+import net.blay09.mods.balm.common.config.ConfigLocalization;
 import net.blay09.mods.unbreakables.api.UnbreakablesAPI;
 import net.blay09.mods.unbreakables.event.NewDigSpeedEvent;
 import net.blay09.mods.unbreakables.network.ModNetworking;
@@ -24,6 +25,7 @@ public class Unbreakables {
     public static final String MOD_ID = "unbreakables";
 
     public static void initialize() {
+        ConfigLocalization.enableModernTranslationKeys(MOD_ID);
         InbuiltParameters.register();
         InbuiltConditions.register();
         InbuiltRequirements.register();

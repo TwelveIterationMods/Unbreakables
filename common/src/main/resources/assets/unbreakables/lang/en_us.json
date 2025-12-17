@@ -4,5 +4,9 @@
   "gui.unbreakables.cooldown_ready": "Ready",
   "gui.unbreakables.xp_points": "%d xp",
   "gui.unbreakables.xp_levels": "%d levels",
-  "gui.unbreakables.item": "%dx %s"
+  "gui.unbreakables.item": "%dx %s",
+  "unbreakables.configuration.rulesets": "Rulesets",
+  "unbreakables.configuration.rulesets.tooltip": "IDs of inbuilt rulesets to enable.",
+  "unbreakables.configuration.rules": "Rules",
+  "unbreakables.configuration.rules.tooltip": "List of custom rules with comma-separated parameters in parentheses. Conditions can be defined as comma-separated list in square brackets. Will be applied in order."
 }
