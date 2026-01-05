@@ -6,7 +6,7 @@ Minecraft Mod. Configure blocks to be unbreakable under certain conditions. Comp
 
 #### Downloads
 
-[![Versions](http://cf.way2muchnoise.eu/versions/1190485_latest.svg)](https://minecraft.curseforge.com/projects/unbreakables) [![Downloads](http://cf.way2muchnoise.eu/full_1190485_downloads.svg)](https://minecraft.curseforge.com/projects/unbreakables)
+[![Versions](http://cf.way2muchnoise.eu/versions/1190485_latest.svg)](https://www.curseforge.com/minecraft/mc-mods/unbreakables) [![Downloads](http://cf.way2muchnoise.eu/full_1190485_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/unbreakables)
 
 ## Contributing
 
