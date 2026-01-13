@@ -1,2 +1,1 @@
-- Fixed memory leak keeping unloaded players in memory, but properly this time
-  - Thanks to pietro-lopes (AllTheLeaks) for pointing it out
+- Fixed translations on config screens
