@@ -10,11 +10,7 @@ import java.util.List;
 
 @Config(Unbreakables.MOD_ID)
 public class UnbreakablesConfig {
-    @Comment("IDs of inbuilt rulesets to enable. For example, \"waystones:generated_waystones\" makes all generated waystones breakable.")
-    @NestedType(String.class)
-    public List<String> rulesets = new ArrayList<>();
-
-    @Comment("List of custom rules with comma-separated parameters in parentheses. Conditions can be defined as comma-separated list in square brackets. Will be applied in order.")
+    @Comment("List of custom rules in Shogi format. Will be applied in order. For example, use('waystones:generated_waystones').")
     @NestedType(String.class)
     public List<String> rules = new ArrayList<>();
 

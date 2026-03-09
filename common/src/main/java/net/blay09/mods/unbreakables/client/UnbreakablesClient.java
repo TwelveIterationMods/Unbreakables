@@ -32,14 +32,12 @@ public class UnbreakablesClient {
             }
 
             BreakTracker.getContext(player, ((MultiPlayerGameModeAccessor) gameMode).getDestroyBlockPos()).ifPresent(context -> {
-                final var requirement = context.resolve();
-                requirement.hint(context, player).ifPresent(hint -> {
-                    @SuppressWarnings("rawtypes") final var renderer = (BreakHintRenderer) BreakHintClientRegistry.getRenderer(hint.id());
-                    if (renderer != null) {
-                        final var partialTicks = Minecraft.getInstance().getDeltaTracker().getRealtimeDeltaTicks();
-                        renderer.render(window, guiGraphics, partialTicks, hint);
-                    }
-                });
+                final var hint = context.getHint();
+                @SuppressWarnings("rawtypes") final var renderer = (BreakHintRenderer) BreakHintClientRegistry.getRenderer(hint.id());
+                if (renderer != null) {
+                    final var partialTicks = Minecraft.getInstance().getDeltaTracker().getRealtimeDeltaTicks();
+                    renderer.render(window, guiGraphics, partialTicks, hint);
+                }
             });
         });
     }

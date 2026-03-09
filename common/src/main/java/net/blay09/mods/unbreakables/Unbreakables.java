@@ -4,15 +4,9 @@ import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.core.BalmRegistrars;
 import net.blay09.mods.balm.platform.event.EventPhases;
 import net.blay09.mods.balm.platform.event.callback.BlockCallback;
-import net.blay09.mods.balm.platform.event.callback.ServerPlayerCallback;
-import net.blay09.mods.unbreakables.api.UnbreakablesAPI;
 import net.blay09.mods.unbreakables.network.ModNetworking;
-import net.blay09.mods.unbreakables.network.UnbreakableRulesMessage;
-import net.blay09.mods.unbreakables.rules.InbuiltConditions;
-import net.blay09.mods.unbreakables.rules.InbuiltParameters;
-import net.blay09.mods.unbreakables.rules.InbuiltRequirements;
+import net.blay09.mods.unbreakables.rules.UnbreakablesRules;
 import net.blay09.mods.unbreakables.rules.hint.*;
-import net.blay09.mods.unbreakables.rulesets.RulesetLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,34 +17,24 @@ public class Unbreakables {
     public static final String MOD_ID = "unbreakables";
 
     public static void initialize(BalmRegistrars registrars) {
-        InbuiltParameters.register();
-        InbuiltConditions.register();
-        InbuiltRequirements.register();
-
-        UnbreakablesAPI.registerHintSerializer(CombinedHint.ID, CombinedHint.CombinedBreakHintSerializer.INSTANCE);
-        UnbreakablesAPI.registerHintSerializer(NoHint.ID, NoHint.NoHintSerializer.INSTANCE);
-        UnbreakablesAPI.registerHintSerializer(MessageHint.ID, MessageHint.MessageHintSerializer.INSTANCE);
-        UnbreakablesAPI.registerHintSerializer(CooldownHint.ID, CooldownHint.CooldownHintSerializer.INSTANCE);
-        UnbreakablesAPI.registerHintSerializer(ExperienceLevelHint.ID, ExperienceLevelHint.ExperienceLevelHintSerializer.INSTANCE);
-        UnbreakablesAPI.registerHintSerializer(ExperiencePointsHint.ID, ExperiencePointsHint.ExperiencePointsHintSerializer.INSTANCE);
-        UnbreakablesAPI.registerHintSerializer(ItemHint.ID, ItemHint.ItemHintSerializer.INSTANCE);
+        BreakHintRegistry.register(CombinedHint.ID, CombinedHint.CombinedBreakHintSerializer.INSTANCE);
+        BreakHintRegistry.register(NoHint.ID, NoHint.NoHintSerializer.INSTANCE);
+        BreakHintRegistry.register(MessageHint.ID, MessageHint.MessageHintSerializer.INSTANCE);
+        BreakHintRegistry.register(CooldownHint.ID, CooldownHint.CooldownHintSerializer.INSTANCE);
+        BreakHintRegistry.register(ExperienceLevelHint.ID, ExperienceLevelHint.ExperienceLevelHintSerializer.INSTANCE);
+        BreakHintRegistry.register(ExperiencePointsHint.ID, ExperiencePointsHint.ExperiencePointsHintSerializer.INSTANCE);
+        BreakHintRegistry.register(ItemHint.ID, ItemHint.ItemHintSerializer.INSTANCE);
 
         UnbreakablesConfig.initialize();
+        UnbreakablesRules.initialize();
 
         ModNetworking.initialize(Balm.networking());
-
-        registrars.resourceReloadListeners(registrar
-                -> registrar.register("json_rulesets", new RulesetLoader()));
-
-        // Sync rules to clients so they can properly predict if a block can be broken
-        ServerPlayerCallback.Join.EVENT.register(player -> Balm.networking().sendTo(player, new UnbreakableRulesMessage(RulesetLoader.getRules())));
 
         // Disable dig speed for breakable blocks
         BlockCallback.DigSpeed.EVENT.register((blockGetter, pos, state, player, speed) -> {
             final var breakContext = BreakTracker.getOrCreateContext(blockGetter, pos, state, player,
-                    (context) -> RulesetLoader.getLoadedRules().forEach(it -> ((BreakContextImpl) context).apply(it)));
-            final var requirement = breakContext.resolve();
-            return !requirement.canAfford(breakContext, player) ? 0f : speed;
+                    context -> context.resolveSimulatedAndSync());
+            return !breakContext.resolveSimulatedAndSync() ? 0f : speed;
         });
 
         // In case the break somehow goes through the dig speed, run as early as possible to cancel the block break
@@ -60,9 +44,7 @@ public class Unbreakables {
             }
 
             final var breakContext = new BreakContextImpl(level, pos, state, player);
-            RulesetLoader.getLoadedRules().forEach(breakContext::apply);
-            final var requirement = breakContext.resolve();
-            if (!requirement.canAfford(breakContext, player)) {
+            if (!breakContext.resolveSimulatedAndSync()) {
                 return false;
             }
             return true;
@@ -75,12 +57,8 @@ public class Unbreakables {
             }
 
             final var breakContext = new BreakContextImpl(level, pos, state, player);
-            RulesetLoader.getLoadedRules().forEach(breakContext::apply);
-            final var requirement = breakContext.resolve();
-            if (!requirement.canAfford(breakContext, player)) {
+            if (!breakContext.resolveImmediate()) {
                 return false;
-            } else {
-                requirement.consume(player);
             }
 
             return true;

@@ -5,7 +5,6 @@ import net.blay09.mods.unbreakables.BreakTracker;
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.api.BreakHint;
 import net.blay09.mods.unbreakables.rules.hint.BreakHintRegistry;
-import net.blay09.mods.unbreakables.rules.requirements.ServersideResponseRequirement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -42,7 +41,7 @@ public record ClientboundUnbreakableStatusPacket(BlockPos pos, BreakHint<?> hint
 
     public static void handle(Player player, ClientboundUnbreakableStatusPacket message) {
         BreakTracker.getContext(player, message.pos)
-                .ifPresent(context -> ((BreakContextImpl) context).resolve(new ServersideResponseRequirement(message.hint(), message.breakable)));
+                .ifPresent(context -> context.applyServerResponse(message.hint(), message.breakable));
     }
 
     @Override

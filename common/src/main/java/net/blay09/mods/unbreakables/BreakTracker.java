@@ -1,6 +1,5 @@
 package net.blay09.mods.unbreakables;
 
-import net.blay09.mods.unbreakables.api.BreakContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -12,7 +11,7 @@ import java.util.function.Consumer;
 
 public class BreakTracker {
 
-    private static final Map<Player, BreakContext> contexts = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final Map<Player, BreakContextImpl> contexts = Collections.synchronizedMap(new WeakHashMap<>());
 
     public static void startBreak(Player player) {
         contexts.remove(player);
@@ -22,7 +21,7 @@ public class BreakTracker {
         contexts.remove(player);
     }
 
-    public static BreakContext getOrCreateContext(BlockGetter blockGetter, BlockPos pos, BlockState state, Player player, Consumer<BreakContext> initializer) {
+    public static BreakContextImpl getOrCreateContext(BlockGetter blockGetter, BlockPos pos, BlockState state, Player player, Consumer<BreakContextImpl> initializer) {
         return contexts.computeIfAbsent(player, (key) -> {
             final var breakContext = new BreakContextImpl(blockGetter, pos, state, player);
             initializer.accept(breakContext);
@@ -30,11 +29,11 @@ public class BreakTracker {
         });
     }
 
-    public static Optional<BreakContext> getContext(Player player) {
+    public static Optional<BreakContextImpl> getContext(Player player) {
         return getContext(player, null);
     }
 
-    public static Optional<BreakContext> getContext(Player player, @Nullable BlockPos pos) {
+    public static Optional<BreakContextImpl> getContext(Player player, @Nullable BlockPos pos) {
         final var breakContext = contexts.get(player);
         if (breakContext != null && (pos == null || breakContext.getPos().equals(pos))) {
             return Optional.of(breakContext);
