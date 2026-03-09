@@ -126,7 +126,7 @@ public class InbuiltConditions {
                                         parameters.distance().value(),
                                         parameters.distance().value(),
                                         parameters.distance().value()),
-                                it -> parameters.entity().isTag() ? it.getType()
+                                it -> parameters.entity().isTag() ? it
                                         .is(TagKey.create(Registries.ENTITY_TYPE, parameters.entity().value())) : BuiltInRegistries.ENTITY_TYPE.getKey(it.getType())
                                         .equals(parameters.entity().value()))
                         .size() >= parameters.minimum().value()).orElse(false));
