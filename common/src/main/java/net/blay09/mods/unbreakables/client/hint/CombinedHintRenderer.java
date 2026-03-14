@@ -3,12 +3,12 @@ package net.blay09.mods.unbreakables.client.hint;
 import com.mojang.blaze3d.platform.Window;
 import net.blay09.mods.unbreakables.api.client.BreakHintRenderer;
 import net.blay09.mods.unbreakables.rules.hint.CombinedHint;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class CombinedHintRenderer implements BreakHintRenderer<CombinedHint> {
     @SuppressWarnings("unchecked")
     @Override
-    public void render(Window window, GuiGraphics guiGraphics, float partialTicks, CombinedHint hint) {
+    public void render(Window window, GuiGraphicsExtractor guiGraphics, float partialTicks, CombinedHint hint) {
         final var poseStack = guiGraphics.pose();
         poseStack.pushMatrix();
         for (final var child : hint.hints()) {

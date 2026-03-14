@@ -6,7 +6,7 @@ import net.blay09.mods.unbreakables.api.client.BreakHintRenderer;
 import net.blay09.mods.unbreakables.rules.hint.ExperienceLevelHint;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -16,7 +16,7 @@ public class ExperienceLevelHintRenderer implements BreakHintRenderer<Experience
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, "textures/gui/icons.png");
 
     @Override
-    public void render(Window window, GuiGraphics guiGraphics, float partialTicks, ExperienceLevelHint hint) {
+    public void render(Window window, GuiGraphicsExtractor guiGraphics, float partialTicks, ExperienceLevelHint hint) {
         final var player = Minecraft.getInstance().player;
         final var font = Minecraft.getInstance().font;
         final var canAfford = player.experienceLevel >= hint.levels();
@@ -26,6 +26,6 @@ public class ExperienceLevelHintRenderer implements BreakHintRenderer<Experience
         final var x = window.getGuiScaledWidth() / 2 - 8 - textWidth / 2;
         final var y = window.getGuiScaledHeight() / 2 - 8 + 16;
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, canAfford ? 16 : 32, 0, 16, 16, 256, 256);
-        guiGraphics.drawString(font, component, x + 16 + 4, y + 8 - font.lineHeight / 2 + 1, 0xFFFFFFFF);
+        guiGraphics.text(font, component, x + 16 + 4, y + 8 - font.lineHeight / 2 + 1, 0xFFFFFFFF);
     }
 }
