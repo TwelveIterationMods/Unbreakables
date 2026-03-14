@@ -1,8 +1,9 @@
-package net.blay09.mods.unbreakables.client;
+package net.blay09.mods.unbreakables.fabric.client;
 
 import net.blay09.mods.balm.client.BalmClient;
 import net.blay09.mods.balm.fabric.platform.runtime.FabricLoadContext;
 import net.blay09.mods.unbreakables.Unbreakables;
+import net.blay09.mods.unbreakables.client.UnbreakablesClient;
 import net.fabricmc.api.ClientModInitializer;
 
 public class FabricUnbreakablesClient implements ClientModInitializer {

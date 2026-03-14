@@ -20,10 +20,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.blay09.mods.unbreakables.FabricUnbreakables"
+      "net.blay09.mods.unbreakables.fabric.FabricUnbreakables"
+    ],
+    "fabric-datagen": [
+      "net.blay09.mods.unbreakables.fabric.datagen.ModDataGenerator"
     ],
     "client": [
-      "net.blay09.mods.unbreakables.client.FabricUnbreakablesClient"
+      "net.blay09.mods.unbreakables.fabric.client.FabricUnbreakablesClient"
     ]
   },
   "mixins": [
