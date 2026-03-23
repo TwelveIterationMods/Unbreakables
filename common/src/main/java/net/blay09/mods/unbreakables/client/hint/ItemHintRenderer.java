@@ -27,13 +27,12 @@ public class ItemHintRenderer implements BreakHintRenderer<ItemHint> {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 48, 0, 16, 16, 256, 256);
         final var poseStack = guiGraphics.pose();
         poseStack.pushMatrix();
-        poseStack.translate(x + 5, y + 7); // TODO z 1
+        poseStack.translate(x + 5, y + 7);
         poseStack.scale(0.5f, 0.5f);
         guiGraphics.item(hint.itemStack(), 0, 0);
         poseStack.popMatrix();
         if (!canAfford) {
             poseStack.pushMatrix();
-            // TODO z 302
             guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 64, 0, 16, 16, 256, 256);
             poseStack.popMatrix();
         }
