@@ -1,1 +1,2 @@
-- Fixed translations in config screens
+- Updated to Minecraft 26.1
+- Migrated to using [Shogi](https://shogi.twelveiterations.com/guides) for defining rules
