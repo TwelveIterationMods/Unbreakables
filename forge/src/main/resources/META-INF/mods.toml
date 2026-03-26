@@ -3,37 +3,37 @@ loaderVersion="*"
 license="${license}"
 issueTrackerURL="${issues}"
 [[mods]]
-modId="${mod_id}"
+modId="unbreakables"
 version="${version}"
 displayName="${mod_name}"
 displayURL="${homepage}"
-logoFile="${mod_id}.png"
+logoFile="unbreakables.png"
 credits="BlayTheNinth"
 authors="BlayTheNinth"
 description='''${description}'''
 [[mixins]]
-config = "${mod_id}.mixins.json"
+config = "unbreakables.mixins.json"
 [[mixins]]
-config = "${mod_id}.forge.mixins.json"
-[[dependencies.${mod_id}]]
+config = "unbreakables.forge.mixins.json"
+[[dependencies.unbreakables]]
 modId="forge"
 mandatory=true
 versionRange="[${forge_version},)"
 ordering="NONE"
 side="BOTH"
-[[dependencies.${mod_id}]]
+[[dependencies.unbreakables]]
 modId="minecraft"
 mandatory=true
 versionRange="[${minecraft_version},)"
 ordering="NONE"
 side="BOTH"
-[[dependencies.${mod_id}]]
+[[dependencies.unbreakables]]
 modId="balm"
 mandatory=true
 versionRange="[${balm_version},)"
 ordering="NONE"
 side="BOTH"
-[[dependencies.${mod_id}]]
+[[dependencies.unbreakables]]
 modId="shogi"
 mandatory=true
 versionRange="[${shogi_version},)"
