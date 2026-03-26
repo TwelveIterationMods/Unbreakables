@@ -7,6 +7,7 @@ import net.blay09.mods.balm.platform.config.reflection.NestedType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Config(Unbreakables.MOD_ID)
 public class UnbreakablesConfig {
@@ -15,7 +16,7 @@ public class UnbreakablesConfig {
     public List<String> rules = new ArrayList<>();
 
     public static UnbreakablesConfig getActive() {
-        return Balm.config().getActiveConfig(UnbreakablesConfig.class);
+        return Objects.requireNonNull(Balm.config().getActiveConfig(UnbreakablesConfig.class));
     }
 
     public static void initialize() {

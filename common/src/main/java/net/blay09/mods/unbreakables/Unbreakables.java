@@ -32,36 +32,28 @@ public class Unbreakables {
 
         // Disable dig speed for breakable blocks
         BlockCallback.DigSpeed.EVENT.register((blockGetter, pos, state, player, speed) -> {
-            final var breakContext = BreakTracker.getOrCreateContext(blockGetter, pos, state, player,
-                    context -> context.resolveSimulatedAndSync());
+            final var breakContext = BreakTracker.getOrCreateContext(blockGetter, pos, state, player, BreakContextImpl::resolveSimulatedAndSync);
             return !breakContext.resolveSimulatedAndSync() ? 0f : speed;
         });
 
         // In case the break somehow goes through the dig speed, run as early as possible to cancel the block break
         BlockCallback.Break.Before.EVENT.register(EventPhases.HIGHEST, (level, pos, state, blockEntity, player) -> {
-            if (player.getAbilities().instabuild) {
+            if (player != null && player.getAbilities().instabuild) {
                 return true;
             }
 
             final var breakContext = new BreakContextImpl(level, pos, state, player);
-            if (!breakContext.resolveSimulatedAndSync()) {
-                return false;
-            }
-            return true;
+            return breakContext.resolveSimulatedAndSync();
         });
 
         // If the block break is not cancelled, consume requirements
         BlockCallback.Break.Before.EVENT.register(EventPhases.LOWEST, (level, pos, state, blockEntity, player) -> {
-            if (player.getAbilities().instabuild) {
+            if (player != null && player.getAbilities().instabuild) {
                 return true;
             }
 
             final var breakContext = new BreakContextImpl(level, pos, state, player);
-            if (!breakContext.resolveImmediate()) {
-                return false;
-            }
-
-            return true;
+            return breakContext.resolveImmediate();
         });
     }
 

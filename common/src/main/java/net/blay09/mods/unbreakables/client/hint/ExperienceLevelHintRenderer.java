@@ -19,7 +19,7 @@ public class ExperienceLevelHintRenderer implements BreakHintRenderer<Experience
     public void render(Window window, GuiGraphicsExtractor guiGraphics, float partialTicks, ExperienceLevelHint hint) {
         final var player = Minecraft.getInstance().player;
         final var font = Minecraft.getInstance().font;
-        final var canAfford = player.experienceLevel >= hint.levels();
+        final var canAfford = player != null && player.experienceLevel >= hint.levels();
         final var component = Component.translatable("gui.unbreakables.xp_levels", hint.levels())
                 .withStyle(canAfford ? ChatFormatting.GREEN : ChatFormatting.RED);
         final var textWidth = font.width(component);

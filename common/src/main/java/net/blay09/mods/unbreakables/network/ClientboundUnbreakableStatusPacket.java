@@ -1,6 +1,5 @@
 package net.blay09.mods.unbreakables.network;
 
-import net.blay09.mods.unbreakables.BreakContextImpl;
 import net.blay09.mods.unbreakables.BreakTracker;
 import net.blay09.mods.unbreakables.Unbreakables;
 import net.blay09.mods.unbreakables.api.BreakHint;
@@ -14,9 +13,9 @@ import net.minecraft.world.entity.player.Player;
 
 public record ClientboundUnbreakableStatusPacket(BlockPos pos, BreakHint<?> hint, boolean breakable) implements CustomPacketPayload {
 
-    public static Type<ClientboundUnbreakableStatusPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, "unbreakable_status"));
+    public static final Type<ClientboundUnbreakableStatusPacket> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Unbreakables.MOD_ID, "unbreakable_status"));
 
-    public static StreamCodec<RegistryFriendlyByteBuf, ClientboundUnbreakableStatusPacket> STREAM_CODEC = StreamCodec.of(
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundUnbreakableStatusPacket> STREAM_CODEC = StreamCodec.of(
             ClientboundUnbreakableStatusPacket::encode,
             ClientboundUnbreakableStatusPacket::decode
     );

@@ -17,6 +17,7 @@ import net.blay09.mods.unbreakables.rules.hint.ShogiHintFactory;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,11 +26,9 @@ import static net.blay09.mods.unbreakables.Unbreakables.MOD_ID;
 
 public class UnbreakablesRules {
 
-    private static ShogiEffect<?> cachedBreakRequirements;
+    private static @Nullable ShogiEffect<?> cachedBreakRequirements;
 
-    public static final ShogiScope scope = Shogi.scope(id("default"), it -> {
-        it.setDefaultNamespaces(List.of(MOD_ID, "shogi"));
-    });
+    public static final ShogiScope scope = Shogi.scope(id("default"), it -> it.setDefaultNamespaces(List.of(MOD_ID, "shogi")));
 
     public static final ShogiValue<MutableShogiContext, List<?>> breakRequirements = scope.maybe(id("break_requirements"), UnbreakablesRules::evaluateBreakRequirements)
             .coerce(Coercion.LIST);

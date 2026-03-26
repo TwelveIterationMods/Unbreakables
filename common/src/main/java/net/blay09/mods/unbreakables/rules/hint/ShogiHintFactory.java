@@ -17,58 +17,53 @@ import java.util.List;
 public class ShogiHintFactory {
 
     public static BreakHint<?> fromPayload(Object payload) {
-        if (payload == null || payload instanceof ShogiDeferred) {
-            return NoHint.INSTANCE;
-        }
-
-        if (payload instanceof List<?> list) {
-            final List<BreakHint<?>> hints = new ArrayList<>();
-            for (final var item : list) {
-                final var hint = fromPayload(item);
-                if (!(hint instanceof NoHint)) {
-                    hints.add(hint);
+        switch (payload) {
+            case List<?> list -> {
+                final List<BreakHint<?>> hints = new ArrayList<>();
+                for (final var item : list) {
+                    final var hint = fromPayload(item);
+                    if (!(hint instanceof NoHint)) {
+                        hints.add(hint);
+                    }
                 }
+                if (hints.isEmpty()) {
+                    return NoHint.INSTANCE;
+                }
+                if (hints.size() == 1) {
+                    return hints.getFirst();
+                }
+                return new CombinedHint(hints);
             }
-            if (hints.isEmpty()) {
-                return NoHint.INSTANCE;
+            case ExperiencePointsCostInformation info -> {
+                return new ExperiencePointsHint(info.required());
             }
-            if (hints.size() == 1) {
-                return hints.getFirst();
+            case ExperienceLevelCostInformation info -> {
+                return new ExperienceLevelHint(info.required());
             }
-            return new CombinedHint(hints);
-        }
-
-        if (payload instanceof ExperiencePointsCostInformation info) {
-            return new ExperiencePointsHint(info.required());
-        }
-
-        if (payload instanceof ExperienceLevelCostInformation info) {
-            return new ExperienceLevelHint(info.required());
-        }
-
-        if (payload instanceof ItemCostInformation info) {
-            final var itemStack = info.item().stream()
-                    .findFirst()
-                    .map(it -> new ItemStack(it.value()))
-                    .orElse(ItemStack.EMPTY);
-            return new ItemHint(itemStack, info.required(), info.available() >= info.required());
-        }
-
-        if (payload instanceof CooldownInformation info) {
-            return new CooldownHint((int) Math.ceil(info.remainingTicks() / 20f));
-        }
-
-        if (payload instanceof RefusalInformation info) {
-            return new MessageHint(info.message());
-        }
-
-        if (payload instanceof FailureInformation info) {
-            return new MessageHint(info.message());
-        }
-
-        if (payload instanceof Throwable throwable) {
-            final var message = throwable.getMessage() != null ? throwable.getMessage() : throwable.getClass().getSimpleName();
-            return new MessageHint(Component.literal(message));
+            case ItemCostInformation(
+                    net.minecraft.core.HolderSet<net.minecraft.world.item.Item> item, int available, int required
+            ) -> {
+                final var itemStack = item.stream()
+                        .findFirst()
+                        .map(it -> new ItemStack(it.value()))
+                        .orElse(ItemStack.EMPTY);
+                return new ItemHint(itemStack, required, available >= required);
+            }
+            case CooldownInformation info -> {
+                return new CooldownHint((int) Math.ceil(info.remainingTicks() / 20f));
+            }
+            case RefusalInformation(Component message1) -> {
+                return new MessageHint(message1);
+            }
+            case FailureInformation(Component message1) -> {
+                return new MessageHint(message1);
+            }
+            case Throwable throwable -> {
+                final var message = throwable.getMessage() != null ? throwable.getMessage() : throwable.getClass().getSimpleName();
+                return new MessageHint(Component.literal(message));
+            }
+            default -> {
+            }
         }
 
         return NoHint.INSTANCE;

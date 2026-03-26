@@ -24,7 +24,7 @@ public class BreakContextImpl {
     private final BlockGetter blockGetter;
     private final BlockPos pos;
     private final BlockState state;
-    private final WeakReference<Player> player;
+    private final WeakReference<@Nullable Player> player;
 
     private boolean resolved;
     private boolean breakable = true;
@@ -32,7 +32,7 @@ public class BreakContextImpl {
     private @Nullable Boolean serverBreakable;
     private @Nullable BreakHint<?> serverHint;
 
-    public BreakContextImpl(BlockGetter blockGetter, BlockPos pos, BlockState state, Player player) {
+    public BreakContextImpl(BlockGetter blockGetter, BlockPos pos, BlockState state, @Nullable Player player) {
         this.blockGetter = blockGetter;
         this.pos = pos;
         this.state = state;
