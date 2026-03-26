@@ -1,4 +1,4 @@
 @NullMarked
-package net.blay09.mods.unbreakables.api.parameter;
+package net.blay09.mods.unbreakables.neoforge;
 
 import org.jspecify.annotations.NullMarked;
