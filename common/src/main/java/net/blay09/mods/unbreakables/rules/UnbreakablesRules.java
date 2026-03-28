@@ -28,7 +28,7 @@ public class UnbreakablesRules {
 
     private static @Nullable ShogiEffect<?> cachedBreakRequirements;
 
-    public static final ShogiScope scope = Shogi.scope(id("default"), it -> it.setDefaultNamespaces(List.of(MOD_ID, "shogi")));
+    public static final ShogiScope scope = Shogi.scope(id("rules"), it -> it.setDefaultNamespaces(List.of(MOD_ID, "shogi")));
 
     public static final ShogiValue<MutableShogiContext, List<?>> breakRequirements = scope.maybe(id("break_requirements"), UnbreakablesRules::evaluateBreakRequirements)
             .coerce(Coercion.LIST);
