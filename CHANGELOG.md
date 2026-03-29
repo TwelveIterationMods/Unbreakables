@@ -1,2 +1,6 @@
-- Updated to Minecraft 26.1
-- Migrated to using [Shogi](https://shogi.twelveiterations.com/guides) for defining rules
+- Added `placedBlockTracking` config option (default: `in_structure`)
+- Added `is_placed` effect
+  - Only works for cases where block placements were tracked; currently, that is within structures if not disabled in config
+- Fixed wrong Shogi scope being used, resulting in Waystones integration not working
+- Fixed missing mod icon
+- Fixed Shogi not being marked as dependency
