@@ -7,6 +7,7 @@ import net.blay09.mods.balm.platform.event.callback.BlockCallback;
 import net.blay09.mods.unbreakables.network.ModNetworking;
 import net.blay09.mods.unbreakables.rules.UnbreakablesRules;
 import net.blay09.mods.unbreakables.rules.hint.*;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,7 @@ public class Unbreakables {
             return breakContext.resolveSimulatedAndSync();
         });
 
-        // If the block break is not cancelled, consume requirements
+        // If the block break is not canceled, consume requirements
         BlockCallback.Break.Before.EVENT.register(EventPhases.LOWEST, (level, pos, state, blockEntity, player) -> {
             if (player != null && player.getAbilities().instabuild) {
                 return true;
@@ -55,6 +56,10 @@ public class Unbreakables {
             final var breakContext = new BreakContextImpl(level, pos, state, player);
             return breakContext.resolveImmediate();
         });
+    }
+
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 
 }

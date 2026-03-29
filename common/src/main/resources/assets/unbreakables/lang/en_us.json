@@ -5,6 +5,8 @@
   "gui.unbreakables.xp_points": "%d xp",
   "gui.unbreakables.xp_levels": "%d levels",
   "gui.unbreakables.item": "%dx %s",
+  "unbreakables.configuration.placedBlockTracking": "Track Placed Blocks",
+  "unbreakables.configuration.placedBlockTracking.tooltip": "Which block placements should be tracked. Required for `is_generated` rule.",
   "unbreakables.configuration.rules": "Rules",
   "unbreakables.configuration.rules.tooltip": "List of custom rules in Shogi format. Will be applied in order."
 }

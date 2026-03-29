@@ -16,13 +16,13 @@ import net.blay09.mods.unbreakables.UnbreakablesConfig;
 import net.blay09.mods.unbreakables.rules.hint.ShogiHintFactory;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static net.blay09.mods.unbreakables.Unbreakables.MOD_ID;
+import static net.blay09.mods.unbreakables.Unbreakables.id;
 
 public class UnbreakablesRules {
 
@@ -34,6 +34,8 @@ public class UnbreakablesRules {
             .coerce(Coercion.LIST);
 
     public static void initialize() {
+        scope.registerEffect(IsPlaced.IDENTIFIER, IsPlaced.MAP_CODEC);
+
         ConfigCallback.Reloaded.EVENT.register(schema -> {
             if (schema.identifier().equals(id("common"))) {
                 cachedBreakRequirements = null;
@@ -80,10 +82,6 @@ public class UnbreakablesRules {
             Unbreakables.logger.info("{} breakable rules loaded", rules.size());
         }
         return cachedBreakRequirements;
-    }
-
-    public static Identifier id(String path) {
-        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 
     private UnbreakablesRules() {
