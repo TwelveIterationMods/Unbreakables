@@ -1,0 +1,25 @@
+{
+  "values": [
+    "minecraft:water",
+    "minecraft:lava",
+    "minecraft:fire",
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom",
+    "minecraft:vine",
+    "minecraft:cave_vines",
+    "minecraft:cave_vines_plant",
+    "minecraft:weeping_vines",
+    "minecraft:twisting_vines",
+    "minecraft:sugar_cane",
+    "minecraft:kelp",
+    "minecraft:bamboo",
+    "minecraft:torchflower_crop",
+    "minecraft:frogspawn",
+    "minecraft:small_amethyst_bud",
+    "minecraft:medium_amethyst_bud",
+    "minecraft:large_amethyst_bud",
+    "minecraft:amethyst_cluster",
+    "minecraft:sculk_vein",
+    "minecraft:pale_hanging_moss"
+  ]
+}
